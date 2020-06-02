@@ -49,6 +49,6 @@ Although this class uses a bitarray for the sieve be carefull not run out of mem
 
 ## History
 
-YYYY-MM-DD (0.4.0)
+2020-06-02 (0.4.0)
 
 * First public release
