@@ -1528,7 +1528,7 @@ static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_send[] = "send";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_0_4_0[] = "0.4.0";
+static const char __pyx_k_0_4_1[] = "0.4.1";
 static const char __pyx_k_close[] = "close";
 static const char __pyx_k_limit[] = "limit";
 static const char __pyx_k_range[] = "range";
@@ -1561,7 +1561,7 @@ static const char __pyx_k_list_index_out_of_range[] = "list index out of range";
 static const char __pyx_k_reversed___locals_iterator[] = "__reversed__.<locals>.iterator";
 static const char __pyx_k_iter___locals_iterator_locals[] = "__iter__.<locals>.iterator.<locals>.genexpr";
 static const char __pyx_k_reversed___locals_iterator_loc[] = "__reversed__.<locals>.iterator.<locals>.genexpr";
-static PyObject *__pyx_kp_s_0_4_0;
+static PyObject *__pyx_kp_s_0_4_1;
 static PyObject *__pyx_n_s_IndexError;
 static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_n_s_Primes;
@@ -6012,7 +6012,7 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_kp_s_0_4_0, __pyx_k_0_4_0, sizeof(__pyx_k_0_4_0), 0, 0, 1, 0},
+  {&__pyx_kp_s_0_4_1, __pyx_k_0_4_1, sizeof(__pyx_k_0_4_1), 0, 0, 1, 0},
   {&__pyx_n_s_IndexError, __pyx_k_IndexError, sizeof(__pyx_k_IndexError), 0, 0, 1, 1},
   {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_n_s_Primes, __pyx_k_Primes, sizeof(__pyx_k_Primes), 0, 0, 1, 1},
@@ -6492,15 +6492,15 @@ if (!__Pyx_RefNanny) {
   /* "cyprimes.pyx":7
  * from libc.string cimport memcpy
  * 
- * __version__ = '0.4.0'             # <<<<<<<<<<<<<<
+ * __version__ = '0.4.1'             # <<<<<<<<<<<<<<
  * max_ulong = ULONG_MAX
  * 
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version, __pyx_kp_s_0_4_0) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version, __pyx_kp_s_0_4_1) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
 
   /* "cyprimes.pyx":8
  * 
- * __version__ = '0.4.0'
+ * __version__ = '0.4.1'
  * max_ulong = ULONG_MAX             # <<<<<<<<<<<<<<
  * 
  * 
