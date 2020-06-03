@@ -4,7 +4,7 @@ from libc.limits cimport ULONG_MAX
 from libc.stdlib cimport calloc, free, ldiv, ldiv_t
 from libc.string cimport memcpy
 
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 max_ulong = ULONG_MAX
 
 
