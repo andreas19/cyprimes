@@ -10,6 +10,8 @@ max_ulong = ULONG_MAX
 
 @cython.cdivision(True)
 cpdef bint is_prime(number) except -1:
+    if not isinstance(number, int):
+        raise TypeError('number must be integer')
     if number < 0 or number > max_ulong:
         raise ValueError('out of range 0..%d' % max_ulong)
     cdef unsigned long n = <unsigned  long> number
@@ -43,6 +45,8 @@ cdef class Primes:
     cdef size_t ar_size
 
     def __cinit__(self, limit):
+        if not isinstance(limit, int):
+            raise TypeError('limit must be integer')
         if limit <= 0:
             raise ValueError('limit must be > 0 (got %d)' % limit)
         cdef long n = <long> limit
@@ -101,7 +105,7 @@ cdef class Primes:
     def __reversed__(self):
         def iterator():
             if self.limit >= 2:
-                yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+                yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
                             if self.get_bit(i) == 0)
                 yield 2
         return iterator()

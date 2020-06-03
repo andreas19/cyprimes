@@ -52,3 +52,9 @@ Although this class uses a bitarray for the sieve be carefull not run out of mem
 2020-06-02 (0.4.0)
 
 * First public release
+
+2020-06-03 (0.4.1)
+
+* Fix: Primes() and is_prime() now raise TypeErrors if the parameter is not an integer
+* Fix: Primes.__reversed__() now works corrent
+

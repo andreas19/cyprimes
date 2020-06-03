@@ -818,7 +818,7 @@ struct __pyx_obj_8cyprimes___pyx_scope_struct_3___reversed__;
 struct __pyx_obj_8cyprimes___pyx_scope_struct_4_iterator;
 struct __pyx_obj_8cyprimes___pyx_scope_struct_5_genexpr;
 
-/* "cyprimes.pyx":38
+/* "cyprimes.pyx":40
  * 
  * 
  * cdef class Primes:             # <<<<<<<<<<<<<<
@@ -836,7 +836,7 @@ struct __pyx_obj_8cyprimes_Primes {
 };
 
 
-/* "cyprimes.pyx":93
+/* "cyprimes.pyx":97
  *         return self.get_bit((num - 3) // 2) == 0
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -849,7 +849,7 @@ struct __pyx_obj_8cyprimes___pyx_scope_struct____iter__ {
 };
 
 
-/* "cyprimes.pyx":94
+/* "cyprimes.pyx":98
  * 
  *     def __iter__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
@@ -863,7 +863,7 @@ struct __pyx_obj_8cyprimes___pyx_scope_struct_1_iterator {
 };
 
 
-/* "cyprimes.pyx":97
+/* "cyprimes.pyx":101
  *             if self.limit >= 2:
  *                 yield 2
  *                 yield from (i * 2 + 3 for i in range(self.ar_len)             # <<<<<<<<<<<<<<
@@ -880,7 +880,7 @@ struct __pyx_obj_8cyprimes___pyx_scope_struct_2_genexpr {
 };
 
 
-/* "cyprimes.pyx":101
+/* "cyprimes.pyx":105
  *         return iterator()
  * 
  *     def __reversed__(self):             # <<<<<<<<<<<<<<
@@ -893,12 +893,12 @@ struct __pyx_obj_8cyprimes___pyx_scope_struct_3___reversed__ {
 };
 
 
-/* "cyprimes.pyx":102
+/* "cyprimes.pyx":106
  * 
  *     def __reversed__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  */
 struct __pyx_obj_8cyprimes___pyx_scope_struct_4_iterator {
   PyObject_HEAD
@@ -907,10 +907,10 @@ struct __pyx_obj_8cyprimes___pyx_scope_struct_4_iterator {
 };
 
 
-/* "cyprimes.pyx":104
+/* "cyprimes.pyx":108
  *         def iterator():
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)             # <<<<<<<<<<<<<<
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)             # <<<<<<<<<<<<<<
  *                             if self.get_bit(i) == 0)
  *                 yield 2
  */
@@ -925,7 +925,7 @@ struct __pyx_obj_8cyprimes___pyx_scope_struct_5_genexpr {
 
 
 
-/* "cyprimes.pyx":38
+/* "cyprimes.pyx":40
  * 
  * 
  * cdef class Primes:             # <<<<<<<<<<<<<<
@@ -1015,6 +1015,52 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 /* GetBuiltinName.proto */
 static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
+/* PyObjectCall.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
+#else
+#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
+#endif
+
+/* PyThreadStateGet.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
+#define __Pyx_PyThreadState_assign  __pyx_tstate = __Pyx_PyThreadState_Current;
+#define __Pyx_PyErr_Occurred()  __pyx_tstate->curexc_type
+#else
+#define __Pyx_PyThreadState_declare
+#define __Pyx_PyThreadState_assign
+#define __Pyx_PyErr_Occurred()  PyErr_Occurred()
+#endif
+
+/* PyErrFetchRestore.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_PyErr_Clear() __Pyx_ErrRestore(NULL, NULL, NULL)
+#define __Pyx_ErrRestoreWithState(type, value, tb)  __Pyx_ErrRestoreInState(PyThreadState_GET(), type, value, tb)
+#define __Pyx_ErrFetchWithState(type, value, tb)    __Pyx_ErrFetchInState(PyThreadState_GET(), type, value, tb)
+#define __Pyx_ErrRestore(type, value, tb)  __Pyx_ErrRestoreInState(__pyx_tstate, type, value, tb)
+#define __Pyx_ErrFetch(type, value, tb)    __Pyx_ErrFetchInState(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#if CYTHON_COMPILING_IN_CPYTHON
+#define __Pyx_PyErr_SetNone(exc) (Py_INCREF(exc), __Pyx_ErrRestore((exc), NULL, NULL))
+#else
+#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
+#endif
+#else
+#define __Pyx_PyErr_Clear() PyErr_Clear()
+#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
+#define __Pyx_ErrRestoreWithState(type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetchWithState(type, value, tb)  PyErr_Fetch(type, value, tb)
+#define __Pyx_ErrRestoreInState(tstate, type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetchInState(tstate, type, value, tb)  PyErr_Fetch(type, value, tb)
+#define __Pyx_ErrRestore(type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetch(type, value, tb)  PyErr_Fetch(type, value, tb)
+#endif
+
+/* RaiseException.proto */
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
+
 /* PyDictVersioning.proto */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
 #define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
@@ -1092,13 +1138,6 @@ static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, 
     (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
 #endif
 
-/* PyObjectCall.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
-#else
-#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
-#endif
-
 /* PyObjectCallMethO.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
@@ -1106,45 +1145,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
 
 /* PyObjectCallOneArg.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
-/* PyThreadStateGet.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
-#define __Pyx_PyThreadState_assign  __pyx_tstate = __Pyx_PyThreadState_Current;
-#define __Pyx_PyErr_Occurred()  __pyx_tstate->curexc_type
-#else
-#define __Pyx_PyThreadState_declare
-#define __Pyx_PyThreadState_assign
-#define __Pyx_PyErr_Occurred()  PyErr_Occurred()
-#endif
-
-/* PyErrFetchRestore.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_PyErr_Clear() __Pyx_ErrRestore(NULL, NULL, NULL)
-#define __Pyx_ErrRestoreWithState(type, value, tb)  __Pyx_ErrRestoreInState(PyThreadState_GET(), type, value, tb)
-#define __Pyx_ErrFetchWithState(type, value, tb)    __Pyx_ErrFetchInState(PyThreadState_GET(), type, value, tb)
-#define __Pyx_ErrRestore(type, value, tb)  __Pyx_ErrRestoreInState(__pyx_tstate, type, value, tb)
-#define __Pyx_ErrFetch(type, value, tb)    __Pyx_ErrFetchInState(__pyx_tstate, type, value, tb)
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
-#if CYTHON_COMPILING_IN_CPYTHON
-#define __Pyx_PyErr_SetNone(exc) (Py_INCREF(exc), __Pyx_ErrRestore((exc), NULL, NULL))
-#else
-#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
-#endif
-#else
-#define __Pyx_PyErr_Clear() PyErr_Clear()
-#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
-#define __Pyx_ErrRestoreWithState(type, value, tb)  PyErr_Restore(type, value, tb)
-#define __Pyx_ErrFetchWithState(type, value, tb)  PyErr_Fetch(type, value, tb)
-#define __Pyx_ErrRestoreInState(tstate, type, value, tb)  PyErr_Restore(type, value, tb)
-#define __Pyx_ErrFetchInState(tstate, type, value, tb)  PyErr_Fetch(type, value, tb)
-#define __Pyx_ErrRestore(type, value, tb)  PyErr_Restore(type, value, tb)
-#define __Pyx_ErrFetch(type, value, tb)  PyErr_Fetch(type, value, tb)
-#endif
-
-/* RaiseException.proto */
-static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
 /* RaiseDoubleKeywords.proto */
 static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
@@ -1516,6 +1516,7 @@ extern int __pyx_module_is_main_cyprimes;
 int __pyx_module_is_main_cyprimes = 0;
 
 /* Implementation of 'cyprimes' */
+static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_MemoryError;
 static PyObject *__pyx_builtin_range;
@@ -1527,7 +1528,7 @@ static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_send[] = "send";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_0_3_0[] = "0.3.0";
+static const char __pyx_k_0_4_0[] = "0.4.0";
 static const char __pyx_k_close[] = "close";
 static const char __pyx_k_limit[] = "limit";
 static const char __pyx_k_range[] = "range";
@@ -1540,6 +1541,7 @@ static const char __pyx_k_indices[] = "indices";
 static const char __pyx_k_version[] = "__version__";
 static const char __pyx_k_cyprimes[] = "cyprimes";
 static const char __pyx_k_iterator[] = "iterator";
+static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_max_ulong[] = "max_ulong";
 static const char __pyx_k_not_prime[] = "not prime";
 static const char __pyx_k_IndexError[] = "IndexError";
@@ -1552,15 +1554,18 @@ static const char __pyx_k_out_of_range_0_d[] = "out of range 0..%d";
 static const char __pyx_k_src_cyprimes_pyx[] = "src/cyprimes.pyx";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_limit_must_be_0_got_d[] = "limit must be > 0 (got %d)";
+static const char __pyx_k_limit_must_be_integer[] = "limit must be integer";
 static const char __pyx_k_iter___locals_iterator[] = "__iter__.<locals>.iterator";
+static const char __pyx_k_number_must_be_integer[] = "number must be integer";
 static const char __pyx_k_list_index_out_of_range[] = "list index out of range";
 static const char __pyx_k_reversed___locals_iterator[] = "__reversed__.<locals>.iterator";
 static const char __pyx_k_iter___locals_iterator_locals[] = "__iter__.<locals>.iterator.<locals>.genexpr";
 static const char __pyx_k_reversed___locals_iterator_loc[] = "__reversed__.<locals>.iterator.<locals>.genexpr";
-static PyObject *__pyx_kp_s_0_3_0;
+static PyObject *__pyx_kp_s_0_4_0;
 static PyObject *__pyx_n_s_IndexError;
 static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_n_s_Primes;
+static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_n_s_args;
 static PyObject *__pyx_n_s_check_range;
@@ -1578,11 +1583,13 @@ static PyObject *__pyx_n_s_len;
 static PyObject *__pyx_n_s_length;
 static PyObject *__pyx_n_s_limit;
 static PyObject *__pyx_kp_s_limit_must_be_0_got_d;
+static PyObject *__pyx_kp_s_limit_must_be_integer;
 static PyObject *__pyx_kp_s_list_index_out_of_range;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_max_ulong;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_kp_s_not_prime;
+static PyObject *__pyx_kp_s_number_must_be_integer;
 static PyObject *__pyx_kp_s_out_of_range_0_d;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
@@ -1624,19 +1631,21 @@ static PyObject *__pyx_int_2;
 static PyObject *__pyx_int_3;
 static PyObject *__pyx_int_neg_1;
 static PyObject *__pyx_tuple_;
+static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__5;
-static PyObject *__pyx_tuple__6;
-static PyObject *__pyx_codeobj__2;
+static PyObject *__pyx_tuple__7;
+static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_codeobj__4;
+static PyObject *__pyx_codeobj__6;
 /* Late includes */
 
 /* "cyprimes.pyx":12
  * 
  * @cython.cdivision(True)
  * cpdef bint is_prime(number) except -1:             # <<<<<<<<<<<<<<
- *     if number < 0 or number > max_ulong:
- *         raise ValueError('out of range 0..%d' % max_ulong)
+ *     if not isinstance(number, int):
+ *         raise TypeError('number must be integer')
  */
 
 static PyObject *__pyx_pw_8cyprimes_1is_prime(PyObject *__pyx_self, PyObject *__pyx_v_number); /*proto*/
@@ -1647,8 +1656,8 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   unsigned long __pyx_t_5;
   int __pyx_lineno = 0;
@@ -1659,77 +1668,110 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
   /* "cyprimes.pyx":13
  * @cython.cdivision(True)
  * cpdef bint is_prime(number) except -1:
- *     if number < 0 or number > max_ulong:             # <<<<<<<<<<<<<<
- *         raise ValueError('out of range 0..%d' % max_ulong)
- *     cdef unsigned long n = <unsigned  long> number
+ *     if not isinstance(number, int):             # <<<<<<<<<<<<<<
+ *         raise TypeError('number must be integer')
+ *     if number < 0 or number > max_ulong:
  */
-  __pyx_t_2 = PyObject_RichCompare(__pyx_v_number, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 13, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!__pyx_t_3) {
-  } else {
-    __pyx_t_1 = __pyx_t_3;
-    goto __pyx_L4_bool_binop_done;
-  }
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_max_ulong); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyObject_RichCompare(__pyx_v_number, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 13, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 13, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_1 = __pyx_t_3;
-  __pyx_L4_bool_binop_done:;
-  if (unlikely(__pyx_t_1)) {
+  __pyx_t_1 = PyInt_Check(__pyx_v_number); 
+  __pyx_t_2 = ((!(__pyx_t_1 != 0)) != 0);
+  if (unlikely(__pyx_t_2)) {
 
     /* "cyprimes.pyx":14
  * cpdef bint is_prime(number) except -1:
+ *     if not isinstance(number, int):
+ *         raise TypeError('number must be integer')             # <<<<<<<<<<<<<<
  *     if number < 0 or number > max_ulong:
- *         raise ValueError('out of range 0..%d' % max_ulong)             # <<<<<<<<<<<<<<
- *     cdef unsigned long n = <unsigned  long> number
- *     if n <= 1:
+ *         raise ValueError('out of range 0..%d' % max_ulong)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_max_ulong); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 14, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = __Pyx_PyString_FormatSafe(__pyx_kp_s_out_of_range_0_d, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 14, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_Raise(__pyx_t_3, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __PYX_ERR(0, 14, __pyx_L1_error)
 
     /* "cyprimes.pyx":13
  * @cython.cdivision(True)
  * cpdef bint is_prime(number) except -1:
+ *     if not isinstance(number, int):             # <<<<<<<<<<<<<<
+ *         raise TypeError('number must be integer')
+ *     if number < 0 or number > max_ulong:
+ */
+  }
+
+  /* "cyprimes.pyx":15
+ *     if not isinstance(number, int):
+ *         raise TypeError('number must be integer')
+ *     if number < 0 or number > max_ulong:             # <<<<<<<<<<<<<<
+ *         raise ValueError('out of range 0..%d' % max_ulong)
+ *     cdef unsigned long n = <unsigned  long> number
+ */
+  __pyx_t_3 = PyObject_RichCompare(__pyx_v_number, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (!__pyx_t_1) {
+  } else {
+    __pyx_t_2 = __pyx_t_1;
+    goto __pyx_L5_bool_binop_done;
+  }
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_max_ulong); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = PyObject_RichCompare(__pyx_v_number, __pyx_t_3, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_2 = __pyx_t_1;
+  __pyx_L5_bool_binop_done:;
+  if (unlikely(__pyx_t_2)) {
+
+    /* "cyprimes.pyx":16
+ *         raise TypeError('number must be integer')
+ *     if number < 0 or number > max_ulong:
+ *         raise ValueError('out of range 0..%d' % max_ulong)             # <<<<<<<<<<<<<<
+ *     cdef unsigned long n = <unsigned  long> number
+ *     if n <= 1:
+ */
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_max_ulong); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 16, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = __Pyx_PyString_FormatSafe(__pyx_kp_s_out_of_range_0_d, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 16, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 16, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __PYX_ERR(0, 16, __pyx_L1_error)
+
+    /* "cyprimes.pyx":15
+ *     if not isinstance(number, int):
+ *         raise TypeError('number must be integer')
  *     if number < 0 or number > max_ulong:             # <<<<<<<<<<<<<<
  *         raise ValueError('out of range 0..%d' % max_ulong)
  *     cdef unsigned long n = <unsigned  long> number
  */
   }
 
-  /* "cyprimes.pyx":15
+  /* "cyprimes.pyx":17
  *     if number < 0 or number > max_ulong:
  *         raise ValueError('out of range 0..%d' % max_ulong)
  *     cdef unsigned long n = <unsigned  long> number             # <<<<<<<<<<<<<<
  *     if n <= 1:
  *         return 0
  */
-  __pyx_t_5 = __Pyx_PyInt_As_unsigned_long(__pyx_v_number); if (unlikely((__pyx_t_5 == (unsigned long)-1) && PyErr_Occurred())) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_unsigned_long(__pyx_v_number); if (unlikely((__pyx_t_5 == (unsigned long)-1) && PyErr_Occurred())) __PYX_ERR(0, 17, __pyx_L1_error)
   __pyx_v_n = ((unsigned long)__pyx_t_5);
 
-  /* "cyprimes.pyx":16
+  /* "cyprimes.pyx":18
  *         raise ValueError('out of range 0..%d' % max_ulong)
  *     cdef unsigned long n = <unsigned  long> number
  *     if n <= 1:             # <<<<<<<<<<<<<<
  *         return 0
  *     if n < 4:
  */
-  __pyx_t_1 = ((__pyx_v_n <= 1) != 0);
-  if (__pyx_t_1) {
+  __pyx_t_2 = ((__pyx_v_n <= 1) != 0);
+  if (__pyx_t_2) {
 
-    /* "cyprimes.pyx":17
+    /* "cyprimes.pyx":19
  *     cdef unsigned long n = <unsigned  long> number
  *     if n <= 1:
  *         return 0             # <<<<<<<<<<<<<<
@@ -1739,55 +1781,55 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "cyprimes.pyx":16
+    /* "cyprimes.pyx":18
  *         raise ValueError('out of range 0..%d' % max_ulong)
  *     cdef unsigned long n = <unsigned  long> number
  *     if n <= 1:             # <<<<<<<<<<<<<<
  *         return 0
  *     if n < 4:
- */
-  }
-
-  /* "cyprimes.pyx":18
- *     if n <= 1:
- *         return 0
- *     if n < 4:             # <<<<<<<<<<<<<<
- *         return 1
- *     if n % 2 == 0:
- */
-  __pyx_t_1 = ((__pyx_v_n < 4) != 0);
-  if (__pyx_t_1) {
-
-    /* "cyprimes.pyx":19
- *         return 0
- *     if n < 4:
- *         return 1             # <<<<<<<<<<<<<<
- *     if n % 2 == 0:
- *         return 0
- */
-    __pyx_r = 1;
-    goto __pyx_L0;
-
-    /* "cyprimes.pyx":18
- *     if n <= 1:
- *         return 0
- *     if n < 4:             # <<<<<<<<<<<<<<
- *         return 1
- *     if n % 2 == 0:
  */
   }
 
   /* "cyprimes.pyx":20
+ *     if n <= 1:
+ *         return 0
+ *     if n < 4:             # <<<<<<<<<<<<<<
+ *         return 1
+ *     if n % 2 == 0:
+ */
+  __pyx_t_2 = ((__pyx_v_n < 4) != 0);
+  if (__pyx_t_2) {
+
+    /* "cyprimes.pyx":21
+ *         return 0
+ *     if n < 4:
+ *         return 1             # <<<<<<<<<<<<<<
+ *     if n % 2 == 0:
+ *         return 0
+ */
+    __pyx_r = 1;
+    goto __pyx_L0;
+
+    /* "cyprimes.pyx":20
+ *     if n <= 1:
+ *         return 0
+ *     if n < 4:             # <<<<<<<<<<<<<<
+ *         return 1
+ *     if n % 2 == 0:
+ */
+  }
+
+  /* "cyprimes.pyx":22
  *     if n < 4:
  *         return 1
  *     if n % 2 == 0:             # <<<<<<<<<<<<<<
  *         return 0
  *     if n < 9:
  */
-  __pyx_t_1 = (((__pyx_v_n % 2) == 0) != 0);
-  if (__pyx_t_1) {
+  __pyx_t_2 = (((__pyx_v_n % 2) == 0) != 0);
+  if (__pyx_t_2) {
 
-    /* "cyprimes.pyx":21
+    /* "cyprimes.pyx":23
  *         return 1
  *     if n % 2 == 0:
  *         return 0             # <<<<<<<<<<<<<<
@@ -1797,7 +1839,7 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "cyprimes.pyx":20
+    /* "cyprimes.pyx":22
  *     if n < 4:
  *         return 1
  *     if n % 2 == 0:             # <<<<<<<<<<<<<<
@@ -1806,17 +1848,17 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
  */
   }
 
-  /* "cyprimes.pyx":22
+  /* "cyprimes.pyx":24
  *     if n % 2 == 0:
  *         return 0
  *     if n < 9:             # <<<<<<<<<<<<<<
  *         return 1
  *     if n % 3 == 0:
  */
-  __pyx_t_1 = ((__pyx_v_n < 9) != 0);
-  if (__pyx_t_1) {
+  __pyx_t_2 = ((__pyx_v_n < 9) != 0);
+  if (__pyx_t_2) {
 
-    /* "cyprimes.pyx":23
+    /* "cyprimes.pyx":25
  *         return 0
  *     if n < 9:
  *         return 1             # <<<<<<<<<<<<<<
@@ -1826,7 +1868,7 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
     __pyx_r = 1;
     goto __pyx_L0;
 
-    /* "cyprimes.pyx":22
+    /* "cyprimes.pyx":24
  *     if n % 2 == 0:
  *         return 0
  *     if n < 9:             # <<<<<<<<<<<<<<
@@ -1835,17 +1877,17 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
  */
   }
 
-  /* "cyprimes.pyx":24
+  /* "cyprimes.pyx":26
  *     if n < 9:
  *         return 1
  *     if n % 3 == 0:             # <<<<<<<<<<<<<<
  *         return 0
  *     cdef unsigned long r = <unsigned long> sqrt(n)
  */
-  __pyx_t_1 = (((__pyx_v_n % 3) == 0) != 0);
-  if (__pyx_t_1) {
+  __pyx_t_2 = (((__pyx_v_n % 3) == 0) != 0);
+  if (__pyx_t_2) {
 
-    /* "cyprimes.pyx":25
+    /* "cyprimes.pyx":27
  *         return 1
  *     if n % 3 == 0:
  *         return 0             # <<<<<<<<<<<<<<
@@ -1855,7 +1897,7 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "cyprimes.pyx":24
+    /* "cyprimes.pyx":26
  *     if n < 9:
  *         return 1
  *     if n % 3 == 0:             # <<<<<<<<<<<<<<
@@ -1864,7 +1906,7 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
  */
   }
 
-  /* "cyprimes.pyx":26
+  /* "cyprimes.pyx":28
  *     if n % 3 == 0:
  *         return 0
  *     cdef unsigned long r = <unsigned long> sqrt(n)             # <<<<<<<<<<<<<<
@@ -1873,7 +1915,7 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
  */
   __pyx_v_r = ((unsigned long)sqrt(__pyx_v_n));
 
-  /* "cyprimes.pyx":27
+  /* "cyprimes.pyx":29
  *         return 0
  *     cdef unsigned long r = <unsigned long> sqrt(n)
  *     cdef unsigned long f = 5             # <<<<<<<<<<<<<<
@@ -1882,7 +1924,7 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
  */
   __pyx_v_f = 5;
 
-  /* "cyprimes.pyx":28
+  /* "cyprimes.pyx":30
  *     cdef unsigned long r = <unsigned long> sqrt(n)
  *     cdef unsigned long f = 5
  *     while f <= r:             # <<<<<<<<<<<<<<
@@ -1890,28 +1932,28 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
  *             return 0
  */
   while (1) {
-    __pyx_t_1 = ((__pyx_v_f <= __pyx_v_r) != 0);
-    if (!__pyx_t_1) break;
+    __pyx_t_2 = ((__pyx_v_f <= __pyx_v_r) != 0);
+    if (!__pyx_t_2) break;
 
-    /* "cyprimes.pyx":29
+    /* "cyprimes.pyx":31
  *     cdef unsigned long f = 5
  *     while f <= r:
  *         if n % f == 0 or n % (f + 2) == 0:             # <<<<<<<<<<<<<<
  *             return 0
  *         f += 6
  */
-    __pyx_t_3 = (((__pyx_v_n % __pyx_v_f) == 0) != 0);
-    if (!__pyx_t_3) {
+    __pyx_t_1 = (((__pyx_v_n % __pyx_v_f) == 0) != 0);
+    if (!__pyx_t_1) {
     } else {
-      __pyx_t_1 = __pyx_t_3;
-      goto __pyx_L14_bool_binop_done;
+      __pyx_t_2 = __pyx_t_1;
+      goto __pyx_L15_bool_binop_done;
     }
-    __pyx_t_3 = (((__pyx_v_n % (__pyx_v_f + 2)) == 0) != 0);
-    __pyx_t_1 = __pyx_t_3;
-    __pyx_L14_bool_binop_done:;
-    if (__pyx_t_1) {
+    __pyx_t_1 = (((__pyx_v_n % (__pyx_v_f + 2)) == 0) != 0);
+    __pyx_t_2 = __pyx_t_1;
+    __pyx_L15_bool_binop_done:;
+    if (__pyx_t_2) {
 
-      /* "cyprimes.pyx":30
+      /* "cyprimes.pyx":32
  *     while f <= r:
  *         if n % f == 0 or n % (f + 2) == 0:
  *             return 0             # <<<<<<<<<<<<<<
@@ -1921,7 +1963,7 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
       __pyx_r = 0;
       goto __pyx_L0;
 
-      /* "cyprimes.pyx":29
+      /* "cyprimes.pyx":31
  *     cdef unsigned long f = 5
  *     while f <= r:
  *         if n % f == 0 or n % (f + 2) == 0:             # <<<<<<<<<<<<<<
@@ -1930,7 +1972,7 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
  */
     }
 
-    /* "cyprimes.pyx":31
+    /* "cyprimes.pyx":33
  *         if n % f == 0 or n % (f + 2) == 0:
  *             return 0
  *         f += 6             # <<<<<<<<<<<<<<
@@ -1940,7 +1982,7 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
     __pyx_v_f = (__pyx_v_f + 6);
   }
 
-  /* "cyprimes.pyx":32
+  /* "cyprimes.pyx":34
  *             return 0
  *         f += 6
  *     return 1             # <<<<<<<<<<<<<<
@@ -1954,13 +1996,13 @@ static int __pyx_f_8cyprimes_is_prime(PyObject *__pyx_v_number, CYTHON_UNUSED in
  * 
  * @cython.cdivision(True)
  * cpdef bint is_prime(number) except -1:             # <<<<<<<<<<<<<<
- *     if number < 0 or number > max_ulong:
- *         raise ValueError('out of range 0..%d' % max_ulong)
+ *     if not isinstance(number, int):
+ *         raise TypeError('number must be integer')
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("cyprimes.is_prime", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
@@ -2010,12 +2052,12 @@ static PyObject *__pyx_pf_8cyprimes_is_prime(CYTHON_UNUSED PyObject *__pyx_self,
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":45
+/* "cyprimes.pyx":47
  *     cdef size_t ar_size
  * 
  *     def __cinit__(self, limit):             # <<<<<<<<<<<<<<
- *         if limit <= 0:
- *             raise ValueError('limit must be > 0 (got %d)' % limit)
+ *         if not isinstance(limit, int):
+ *             raise TypeError('limit must be integer')
  */
 
 /* Python wrapper */
@@ -2047,7 +2089,7 @@ static int __pyx_pw_8cyprimes_6Primes_1__cinit__(PyObject *__pyx_v_self, PyObjec
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 45, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 47, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -2058,7 +2100,7 @@ static int __pyx_pw_8cyprimes_6Primes_1__cinit__(PyObject *__pyx_v_self, PyObjec
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 45, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 47, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyprimes.Primes.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2076,63 +2118,97 @@ static int __pyx_pf_8cyprimes_6Primes___cinit__(struct __pyx_obj_8cyprimes_Prime
   ldiv_t __pyx_v_r;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_1;
   int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
-  long __pyx_t_4;
+  PyObject *__pyx_t_4 = NULL;
+  long __pyx_t_5;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "cyprimes.pyx":46
+  /* "cyprimes.pyx":48
  * 
  *     def __cinit__(self, limit):
+ *         if not isinstance(limit, int):             # <<<<<<<<<<<<<<
+ *             raise TypeError('limit must be integer')
+ *         if limit <= 0:
+ */
+  __pyx_t_1 = PyInt_Check(__pyx_v_limit); 
+  __pyx_t_2 = ((!(__pyx_t_1 != 0)) != 0);
+  if (unlikely(__pyx_t_2)) {
+
+    /* "cyprimes.pyx":49
+ *     def __cinit__(self, limit):
+ *         if not isinstance(limit, int):
+ *             raise TypeError('limit must be integer')             # <<<<<<<<<<<<<<
+ *         if limit <= 0:
+ *             raise ValueError('limit must be > 0 (got %d)' % limit)
+ */
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_Raise(__pyx_t_3, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __PYX_ERR(0, 49, __pyx_L1_error)
+
+    /* "cyprimes.pyx":48
+ * 
+ *     def __cinit__(self, limit):
+ *         if not isinstance(limit, int):             # <<<<<<<<<<<<<<
+ *             raise TypeError('limit must be integer')
+ *         if limit <= 0:
+ */
+  }
+
+  /* "cyprimes.pyx":50
+ *         if not isinstance(limit, int):
+ *             raise TypeError('limit must be integer')
  *         if limit <= 0:             # <<<<<<<<<<<<<<
  *             raise ValueError('limit must be > 0 (got %d)' % limit)
  *         cdef long n = <long> limit
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_limit, __pyx_int_0, Py_LE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 46, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_3 = PyObject_RichCompare(__pyx_v_limit, __pyx_int_0, Py_LE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (unlikely(__pyx_t_2)) {
 
-    /* "cyprimes.pyx":47
- *     def __cinit__(self, limit):
+    /* "cyprimes.pyx":51
+ *             raise TypeError('limit must be integer')
  *         if limit <= 0:
  *             raise ValueError('limit must be > 0 (got %d)' % limit)             # <<<<<<<<<<<<<<
  *         cdef long n = <long> limit
  *         self.limit = n
  */
-    __pyx_t_1 = __Pyx_PyString_FormatSafe(__pyx_kp_s_limit_must_be_0_got_d, __pyx_v_limit); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyString_FormatSafe(__pyx_kp_s_limit_must_be_0_got_d, __pyx_v_limit); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_Raise(__pyx_t_3, 0, 0, 0);
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 51, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 47, __pyx_L1_error)
+    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __PYX_ERR(0, 51, __pyx_L1_error)
 
-    /* "cyprimes.pyx":46
- * 
- *     def __cinit__(self, limit):
+    /* "cyprimes.pyx":50
+ *         if not isinstance(limit, int):
+ *             raise TypeError('limit must be integer')
  *         if limit <= 0:             # <<<<<<<<<<<<<<
  *             raise ValueError('limit must be > 0 (got %d)' % limit)
  *         cdef long n = <long> limit
  */
   }
 
-  /* "cyprimes.pyx":48
+  /* "cyprimes.pyx":52
  *         if limit <= 0:
  *             raise ValueError('limit must be > 0 (got %d)' % limit)
  *         cdef long n = <long> limit             # <<<<<<<<<<<<<<
  *         self.limit = n
  *         self.ar_len = (n - 3) // 2 + 1
  */
-  __pyx_t_4 = __Pyx_PyInt_As_long(__pyx_v_limit); if (unlikely((__pyx_t_4 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 48, __pyx_L1_error)
-  __pyx_v_n = ((long)__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_v_limit); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_v_n = ((long)__pyx_t_5);
 
-  /* "cyprimes.pyx":49
+  /* "cyprimes.pyx":53
  *             raise ValueError('limit must be > 0 (got %d)' % limit)
  *         cdef long n = <long> limit
  *         self.limit = n             # <<<<<<<<<<<<<<
@@ -2141,7 +2217,7 @@ static int __pyx_pf_8cyprimes_6Primes___cinit__(struct __pyx_obj_8cyprimes_Prime
  */
   __pyx_v_self->limit = __pyx_v_n;
 
-  /* "cyprimes.pyx":50
+  /* "cyprimes.pyx":54
  *         cdef long n = <long> limit
  *         self.limit = n
  *         self.ar_len = (n - 3) // 2 + 1             # <<<<<<<<<<<<<<
@@ -2150,7 +2226,7 @@ static int __pyx_pf_8cyprimes_6Primes___cinit__(struct __pyx_obj_8cyprimes_Prime
  */
   __pyx_v_self->ar_len = (__Pyx_div_long((__pyx_v_n - 3), 2) + 1);
 
-  /* "cyprimes.pyx":51
+  /* "cyprimes.pyx":55
  *         self.limit = n
  *         self.ar_len = (n - 3) // 2 + 1
  *         self.len = self.ar_len + 1 if n > 1 else 0             # <<<<<<<<<<<<<<
@@ -2158,13 +2234,13 @@ static int __pyx_pf_8cyprimes_6Primes___cinit__(struct __pyx_obj_8cyprimes_Prime
  *         self.ar_size = r.quot + (1 if r.rem else 0)
  */
   if (((__pyx_v_n > 1) != 0)) {
-    __pyx_t_4 = (__pyx_v_self->ar_len + 1);
+    __pyx_t_5 = (__pyx_v_self->ar_len + 1);
   } else {
-    __pyx_t_4 = 0;
+    __pyx_t_5 = 0;
   }
-  __pyx_v_self->len = __pyx_t_4;
+  __pyx_v_self->len = __pyx_t_5;
 
-  /* "cyprimes.pyx":52
+  /* "cyprimes.pyx":56
  *         self.ar_len = (n - 3) // 2 + 1
  *         self.len = self.ar_len + 1 if n > 1 else 0
  *         cdef ldiv_t r = ldiv(self.ar_len, bits)             # <<<<<<<<<<<<<<
@@ -2173,7 +2249,7 @@ static int __pyx_pf_8cyprimes_6Primes___cinit__(struct __pyx_obj_8cyprimes_Prime
  */
   __pyx_v_r = ldiv(__pyx_v_self->ar_len, __pyx_v_8cyprimes_bits);
 
-  /* "cyprimes.pyx":53
+  /* "cyprimes.pyx":57
  *         self.len = self.ar_len + 1 if n > 1 else 0
  *         cdef ldiv_t r = ldiv(self.ar_len, bits)
  *         self.ar_size = r.quot + (1 if r.rem else 0)             # <<<<<<<<<<<<<<
@@ -2181,13 +2257,13 @@ static int __pyx_pf_8cyprimes_6Primes___cinit__(struct __pyx_obj_8cyprimes_Prime
  *         if not self.data:
  */
   if ((__pyx_v_r.rem != 0)) {
-    __pyx_t_4 = 1;
+    __pyx_t_5 = 1;
   } else {
-    __pyx_t_4 = 0;
+    __pyx_t_5 = 0;
   }
-  __pyx_v_self->ar_size = (__pyx_v_r.quot + __pyx_t_4);
+  __pyx_v_self->ar_size = (__pyx_v_r.quot + __pyx_t_5);
 
-  /* "cyprimes.pyx":54
+  /* "cyprimes.pyx":58
  *         cdef ldiv_t r = ldiv(self.ar_len, bits)
  *         self.ar_size = r.quot + (1 if r.rem else 0)
  *         self.data = <int*> calloc(self.ar_size, sizeof(int))             # <<<<<<<<<<<<<<
@@ -2196,7 +2272,7 @@ static int __pyx_pf_8cyprimes_6Primes___cinit__(struct __pyx_obj_8cyprimes_Prime
  */
   __pyx_v_self->data = ((int *)calloc(__pyx_v_self->ar_size, (sizeof(int))));
 
-  /* "cyprimes.pyx":55
+  /* "cyprimes.pyx":59
  *         self.ar_size = r.quot + (1 if r.rem else 0)
  *         self.data = <int*> calloc(self.ar_size, sizeof(int))
  *         if not self.data:             # <<<<<<<<<<<<<<
@@ -2206,16 +2282,16 @@ static int __pyx_pf_8cyprimes_6Primes___cinit__(struct __pyx_obj_8cyprimes_Prime
   __pyx_t_2 = ((!(__pyx_v_self->data != 0)) != 0);
   if (unlikely(__pyx_t_2)) {
 
-    /* "cyprimes.pyx":56
+    /* "cyprimes.pyx":60
  *         self.data = <int*> calloc(self.ar_size, sizeof(int))
  *         if not self.data:
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  * 
  *     def __init__(self, limit):
  */
-    PyErr_NoMemory(); __PYX_ERR(0, 56, __pyx_L1_error)
+    PyErr_NoMemory(); __PYX_ERR(0, 60, __pyx_L1_error)
 
-    /* "cyprimes.pyx":55
+    /* "cyprimes.pyx":59
  *         self.ar_size = r.quot + (1 if r.rem else 0)
  *         self.data = <int*> calloc(self.ar_size, sizeof(int))
  *         if not self.data:             # <<<<<<<<<<<<<<
@@ -2224,20 +2300,20 @@ static int __pyx_pf_8cyprimes_6Primes___cinit__(struct __pyx_obj_8cyprimes_Prime
  */
   }
 
-  /* "cyprimes.pyx":45
+  /* "cyprimes.pyx":47
  *     cdef size_t ar_size
  * 
  *     def __cinit__(self, limit):             # <<<<<<<<<<<<<<
- *         if limit <= 0:
- *             raise ValueError('limit must be > 0 (got %d)' % limit)
+ *         if not isinstance(limit, int):
+ *             raise TypeError('limit must be integer')
  */
 
   /* function exit code */
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("cyprimes.Primes.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -2245,7 +2321,7 @@ static int __pyx_pf_8cyprimes_6Primes___cinit__(struct __pyx_obj_8cyprimes_Prime
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":58
+/* "cyprimes.pyx":62
  *             raise MemoryError()
  * 
  *     def __init__(self, limit):             # <<<<<<<<<<<<<<
@@ -2282,7 +2358,7 @@ static int __pyx_pw_8cyprimes_6Primes_3__init__(PyObject *__pyx_v_self, PyObject
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 58, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 62, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -2293,7 +2369,7 @@ static int __pyx_pw_8cyprimes_6Primes_3__init__(PyObject *__pyx_v_self, PyObject
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 58, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 62, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyprimes.Primes.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2322,17 +2398,17 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "cyprimes.pyx":59
+  /* "cyprimes.pyx":63
  * 
  *     def __init__(self, limit):
  *         cdef long i, k, s, n = <long> limit             # <<<<<<<<<<<<<<
  *         for i in range(3, <long> sqrt(n) + 1, 2):
  *             if self.get_bit((i - 3) // 2) == 1:
  */
-  __pyx_t_1 = __Pyx_PyInt_As_long(__pyx_v_limit); if (unlikely((__pyx_t_1 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_long(__pyx_v_limit); if (unlikely((__pyx_t_1 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L1_error)
   __pyx_v_n = ((long)__pyx_t_1);
 
-  /* "cyprimes.pyx":60
+  /* "cyprimes.pyx":64
  *     def __init__(self, limit):
  *         cdef long i, k, s, n = <long> limit
  *         for i in range(3, <long> sqrt(n) + 1, 2):             # <<<<<<<<<<<<<<
@@ -2344,7 +2420,7 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
   for (__pyx_t_3 = 3; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=2) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "cyprimes.pyx":61
+    /* "cyprimes.pyx":65
  *         cdef long i, k, s, n = <long> limit
  *         for i in range(3, <long> sqrt(n) + 1, 2):
  *             if self.get_bit((i - 3) // 2) == 1:             # <<<<<<<<<<<<<<
@@ -2354,7 +2430,7 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
     __pyx_t_4 = ((((struct __pyx_vtabstruct_8cyprimes_Primes *)__pyx_v_self->__pyx_vtab)->get_bit(__pyx_v_self, __Pyx_div_long((__pyx_v_i - 3), 2)) == 1) != 0);
     if (__pyx_t_4) {
 
-      /* "cyprimes.pyx":62
+      /* "cyprimes.pyx":66
  *         for i in range(3, <long> sqrt(n) + 1, 2):
  *             if self.get_bit((i - 3) // 2) == 1:
  *                 continue             # <<<<<<<<<<<<<<
@@ -2363,7 +2439,7 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
  */
       goto __pyx_L3_continue;
 
-      /* "cyprimes.pyx":61
+      /* "cyprimes.pyx":65
  *         cdef long i, k, s, n = <long> limit
  *         for i in range(3, <long> sqrt(n) + 1, 2):
  *             if self.get_bit((i - 3) // 2) == 1:             # <<<<<<<<<<<<<<
@@ -2372,7 +2448,7 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
  */
     }
 
-    /* "cyprimes.pyx":63
+    /* "cyprimes.pyx":67
  *             if self.get_bit((i - 3) // 2) == 1:
  *                 continue
  *             k = i * i             # <<<<<<<<<<<<<<
@@ -2381,7 +2457,7 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
  */
     __pyx_v_k = (__pyx_v_i * __pyx_v_i);
 
-    /* "cyprimes.pyx":64
+    /* "cyprimes.pyx":68
  *                 continue
  *             k = i * i
  *             s = 2 * i             # <<<<<<<<<<<<<<
@@ -2390,7 +2466,7 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
  */
     __pyx_v_s = (2 * __pyx_v_i);
 
-    /* "cyprimes.pyx":65
+    /* "cyprimes.pyx":69
  *             k = i * i
  *             s = 2 * i
  *             while k <= n:             # <<<<<<<<<<<<<<
@@ -2401,7 +2477,7 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
       __pyx_t_4 = ((__pyx_v_k <= __pyx_v_n) != 0);
       if (!__pyx_t_4) break;
 
-      /* "cyprimes.pyx":66
+      /* "cyprimes.pyx":70
  *             s = 2 * i
  *             while k <= n:
  *                 self.set_bit((k - 3) // 2)             # <<<<<<<<<<<<<<
@@ -2410,7 +2486,7 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
  */
       ((struct __pyx_vtabstruct_8cyprimes_Primes *)__pyx_v_self->__pyx_vtab)->set_bit(__pyx_v_self, __Pyx_div_long((__pyx_v_k - 3), 2));
 
-      /* "cyprimes.pyx":67
+      /* "cyprimes.pyx":71
  *             while k <= n:
  *                 self.set_bit((k - 3) // 2)
  *                 k += s             # <<<<<<<<<<<<<<
@@ -2422,7 +2498,7 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
     __pyx_L3_continue:;
   }
 
-  /* "cyprimes.pyx":58
+  /* "cyprimes.pyx":62
  *             raise MemoryError()
  * 
  *     def __init__(self, limit):             # <<<<<<<<<<<<<<
@@ -2441,7 +2517,7 @@ static int __pyx_pf_8cyprimes_6Primes_2__init__(struct __pyx_obj_8cyprimes_Prime
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":69
+/* "cyprimes.pyx":73
  *                 k += s
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -2464,7 +2540,7 @@ static void __pyx_pf_8cyprimes_6Primes_4__dealloc__(struct __pyx_obj_8cyprimes_P
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "cyprimes.pyx":70
+  /* "cyprimes.pyx":74
  * 
  *     def __dealloc__(self):
  *         free(self.data)             # <<<<<<<<<<<<<<
@@ -2473,7 +2549,7 @@ static void __pyx_pf_8cyprimes_6Primes_4__dealloc__(struct __pyx_obj_8cyprimes_P
  */
   free(__pyx_v_self->data);
 
-  /* "cyprimes.pyx":69
+  /* "cyprimes.pyx":73
  *                 k += s
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -2485,7 +2561,7 @@ static void __pyx_pf_8cyprimes_6Primes_4__dealloc__(struct __pyx_obj_8cyprimes_P
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cyprimes.pyx":72
+/* "cyprimes.pyx":76
  *         free(self.data)
  * 
  *     cdef void set_bit(self, long idx):             # <<<<<<<<<<<<<<
@@ -2500,7 +2576,7 @@ static void __pyx_f_8cyprimes_6Primes_set_bit(struct __pyx_obj_8cyprimes_Primes 
   long __pyx_t_2;
   __Pyx_RefNannySetupContext("set_bit", 0);
 
-  /* "cyprimes.pyx":73
+  /* "cyprimes.pyx":77
  * 
  *     cdef void set_bit(self, long idx):
  *         cdef ldiv_t r = ldiv(idx, bits)             # <<<<<<<<<<<<<<
@@ -2509,7 +2585,7 @@ static void __pyx_f_8cyprimes_6Primes_set_bit(struct __pyx_obj_8cyprimes_Primes 
  */
   __pyx_v_r = ldiv(__pyx_v_idx, __pyx_v_8cyprimes_bits);
 
-  /* "cyprimes.pyx":74
+  /* "cyprimes.pyx":78
  *     cdef void set_bit(self, long idx):
  *         cdef ldiv_t r = ldiv(idx, bits)
  *         if not self.data[r.quot] & (1 << r.rem):             # <<<<<<<<<<<<<<
@@ -2519,7 +2595,7 @@ static void __pyx_f_8cyprimes_6Primes_set_bit(struct __pyx_obj_8cyprimes_Primes 
   __pyx_t_1 = ((!(((__pyx_v_self->data[__pyx_v_r.quot]) & (1 << __pyx_v_r.rem)) != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "cyprimes.pyx":75
+    /* "cyprimes.pyx":79
  *         cdef ldiv_t r = ldiv(idx, bits)
  *         if not self.data[r.quot] & (1 << r.rem):
  *             self.len -= 1             # <<<<<<<<<<<<<<
@@ -2528,7 +2604,7 @@ static void __pyx_f_8cyprimes_6Primes_set_bit(struct __pyx_obj_8cyprimes_Primes 
  */
     __pyx_v_self->len = (__pyx_v_self->len - 1);
 
-    /* "cyprimes.pyx":76
+    /* "cyprimes.pyx":80
  *         if not self.data[r.quot] & (1 << r.rem):
  *             self.len -= 1
  *             self.data[r.quot] |= 1 << r.rem             # <<<<<<<<<<<<<<
@@ -2538,7 +2614,7 @@ static void __pyx_f_8cyprimes_6Primes_set_bit(struct __pyx_obj_8cyprimes_Primes 
     __pyx_t_2 = __pyx_v_r.quot;
     (__pyx_v_self->data[__pyx_t_2]) = ((__pyx_v_self->data[__pyx_t_2]) | (1 << __pyx_v_r.rem));
 
-    /* "cyprimes.pyx":74
+    /* "cyprimes.pyx":78
  *     cdef void set_bit(self, long idx):
  *         cdef ldiv_t r = ldiv(idx, bits)
  *         if not self.data[r.quot] & (1 << r.rem):             # <<<<<<<<<<<<<<
@@ -2547,7 +2623,7 @@ static void __pyx_f_8cyprimes_6Primes_set_bit(struct __pyx_obj_8cyprimes_Primes 
  */
   }
 
-  /* "cyprimes.pyx":72
+  /* "cyprimes.pyx":76
  *         free(self.data)
  * 
  *     cdef void set_bit(self, long idx):             # <<<<<<<<<<<<<<
@@ -2559,7 +2635,7 @@ static void __pyx_f_8cyprimes_6Primes_set_bit(struct __pyx_obj_8cyprimes_Primes 
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cyprimes.pyx":78
+/* "cyprimes.pyx":82
  *             self.data[r.quot] |= 1 << r.rem
  * 
  *     cdef int get_bit(self, long idx):             # <<<<<<<<<<<<<<
@@ -2574,7 +2650,7 @@ static int __pyx_f_8cyprimes_6Primes_get_bit(struct __pyx_obj_8cyprimes_Primes *
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("get_bit", 0);
 
-  /* "cyprimes.pyx":79
+  /* "cyprimes.pyx":83
  * 
  *     cdef int get_bit(self, long idx):
  *         cdef ldiv_t r = ldiv(idx, bits)             # <<<<<<<<<<<<<<
@@ -2583,7 +2659,7 @@ static int __pyx_f_8cyprimes_6Primes_get_bit(struct __pyx_obj_8cyprimes_Primes *
  */
   __pyx_v_r = ldiv(__pyx_v_idx, __pyx_v_8cyprimes_bits);
 
-  /* "cyprimes.pyx":80
+  /* "cyprimes.pyx":84
  *     cdef int get_bit(self, long idx):
  *         cdef ldiv_t r = ldiv(idx, bits)
  *         return 1 if self.data[r.quot] & (1 << r.rem) else 0             # <<<<<<<<<<<<<<
@@ -2598,7 +2674,7 @@ static int __pyx_f_8cyprimes_6Primes_get_bit(struct __pyx_obj_8cyprimes_Primes *
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "cyprimes.pyx":78
+  /* "cyprimes.pyx":82
  *             self.data[r.quot] |= 1 << r.rem
  * 
  *     cdef int get_bit(self, long idx):             # <<<<<<<<<<<<<<
@@ -2612,7 +2688,7 @@ static int __pyx_f_8cyprimes_6Primes_get_bit(struct __pyx_obj_8cyprimes_Primes *
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":82
+/* "cyprimes.pyx":86
  *         return 1 if self.data[r.quot] & (1 << r.rem) else 0
  * 
  *     def __len__(self):             # <<<<<<<<<<<<<<
@@ -2638,7 +2714,7 @@ static Py_ssize_t __pyx_pf_8cyprimes_6Primes_6__len__(struct __pyx_obj_8cyprimes
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__len__", 0);
 
-  /* "cyprimes.pyx":83
+  /* "cyprimes.pyx":87
  * 
  *     def __len__(self):
  *         return self.len             # <<<<<<<<<<<<<<
@@ -2648,7 +2724,7 @@ static Py_ssize_t __pyx_pf_8cyprimes_6Primes_6__len__(struct __pyx_obj_8cyprimes
   __pyx_r = __pyx_v_self->len;
   goto __pyx_L0;
 
-  /* "cyprimes.pyx":82
+  /* "cyprimes.pyx":86
  *         return 1 if self.data[r.quot] & (1 << r.rem) else 0
  * 
  *     def __len__(self):             # <<<<<<<<<<<<<<
@@ -2662,7 +2738,7 @@ static Py_ssize_t __pyx_pf_8cyprimes_6Primes_6__len__(struct __pyx_obj_8cyprimes
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":85
+/* "cyprimes.pyx":89
  *         return self.len
  * 
  *     def __contains__(self, num):             # <<<<<<<<<<<<<<
@@ -2697,14 +2773,14 @@ static int __pyx_pf_8cyprimes_6Primes_8__contains__(struct __pyx_obj_8cyprimes_P
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__contains__", 0);
 
-  /* "cyprimes.pyx":86
+  /* "cyprimes.pyx":90
  * 
  *     def __contains__(self, num):
  *         self._check_range(num)             # <<<<<<<<<<<<<<
  *         if num == 2:
  *             return True
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_range); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_range); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -2718,25 +2794,25 @@ static int __pyx_pf_8cyprimes_6Primes_8__contains__(struct __pyx_obj_8cyprimes_P
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_num) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_num);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cyprimes.pyx":87
+  /* "cyprimes.pyx":91
  *     def __contains__(self, num):
  *         self._check_range(num)
  *         if num == 2:             # <<<<<<<<<<<<<<
  *             return True
  *         if num < 2 or num % 2 == 0:
  */
-  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_num, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_num, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_4) {
 
-    /* "cyprimes.pyx":88
+    /* "cyprimes.pyx":92
  *         self._check_range(num)
  *         if num == 2:
  *             return True             # <<<<<<<<<<<<<<
@@ -2746,7 +2822,7 @@ static int __pyx_pf_8cyprimes_6Primes_8__contains__(struct __pyx_obj_8cyprimes_P
     __pyx_r = 1;
     goto __pyx_L0;
 
-    /* "cyprimes.pyx":87
+    /* "cyprimes.pyx":91
  *     def __contains__(self, num):
  *         self._check_range(num)
  *         if num == 2:             # <<<<<<<<<<<<<<
@@ -2755,33 +2831,33 @@ static int __pyx_pf_8cyprimes_6Primes_8__contains__(struct __pyx_obj_8cyprimes_P
  */
   }
 
-  /* "cyprimes.pyx":89
+  /* "cyprimes.pyx":93
  *         if num == 2:
  *             return True
  *         if num < 2 or num % 2 == 0:             # <<<<<<<<<<<<<<
  *             return False
  *         return self.get_bit((num - 3) // 2) == 0
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_num, __pyx_int_2, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_num, __pyx_int_2, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (!__pyx_t_5) {
   } else {
     __pyx_t_4 = __pyx_t_5;
     goto __pyx_L5_bool_binop_done;
   }
-  __pyx_t_1 = __Pyx_PyInt_RemainderObjC(__pyx_v_num, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_RemainderObjC(__pyx_v_num, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_4 = __pyx_t_5;
   __pyx_L5_bool_binop_done:;
   if (__pyx_t_4) {
 
-    /* "cyprimes.pyx":90
+    /* "cyprimes.pyx":94
  *             return True
  *         if num < 2 or num % 2 == 0:
  *             return False             # <<<<<<<<<<<<<<
@@ -2791,7 +2867,7 @@ static int __pyx_pf_8cyprimes_6Primes_8__contains__(struct __pyx_obj_8cyprimes_P
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "cyprimes.pyx":89
+    /* "cyprimes.pyx":93
  *         if num == 2:
  *             return True
  *         if num < 2 or num % 2 == 0:             # <<<<<<<<<<<<<<
@@ -2800,24 +2876,24 @@ static int __pyx_pf_8cyprimes_6Primes_8__contains__(struct __pyx_obj_8cyprimes_P
  */
   }
 
-  /* "cyprimes.pyx":91
+  /* "cyprimes.pyx":95
  *         if num < 2 or num % 2 == 0:
  *             return False
  *         return self.get_bit((num - 3) // 2) == 0             # <<<<<<<<<<<<<<
  * 
  *     def __iter__(self):
  */
-  __pyx_t_2 = __Pyx_PyInt_SubtractObjC(__pyx_v_num, __pyx_int_3, 3, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_SubtractObjC(__pyx_v_num, __pyx_int_3, 3, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_2, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_FloorDivideObjC(__pyx_t_2, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_6 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_6 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = (((struct __pyx_vtabstruct_8cyprimes_Primes *)__pyx_v_self->__pyx_vtab)->get_bit(__pyx_v_self, __pyx_t_6) == 0);
   goto __pyx_L0;
 
-  /* "cyprimes.pyx":85
+  /* "cyprimes.pyx":89
  *         return self.len
  * 
  *     def __contains__(self, num):             # <<<<<<<<<<<<<<
@@ -2837,7 +2913,7 @@ static int __pyx_pf_8cyprimes_6Primes_8__contains__(struct __pyx_obj_8cyprimes_P
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":93
+/* "cyprimes.pyx":97
  *         return self.get_bit((num - 3) // 2) == 0
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -2859,7 +2935,7 @@ static PyObject *__pyx_pw_8cyprimes_6Primes_11__iter__(PyObject *__pyx_v_self) {
 }
 static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "cyprimes.pyx":94
+/* "cyprimes.pyx":98
  * 
  *     def __iter__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
@@ -2882,7 +2958,7 @@ static PyObject *__pyx_pw_8cyprimes_6Primes_8__iter___1iterator(PyObject *__pyx_
 }
 static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___8iterator_2generator1(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "cyprimes.pyx":97
+/* "cyprimes.pyx":101
  *             if self.limit >= 2:
  *                 yield 2
  *                 yield from (i * 2 + 3 for i in range(self.ar_len)             # <<<<<<<<<<<<<<
@@ -2902,7 +2978,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_8__iter___8iterator_genexpr(PyObject
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_8cyprimes___pyx_scope_struct_2_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 97, __pyx_L1_error)
+    __PYX_ERR(0, 101, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -2910,7 +2986,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_8__iter___8iterator_genexpr(PyObject
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_8cyprimes_6Primes_8__iter___8iterator_2generator1, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_iter___locals_iterator_locals, __pyx_n_s_cyprimes); if (unlikely(!gen)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_8cyprimes_6Primes_8__iter___8iterator_2generator1, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_iter___locals_iterator_locals, __pyx_n_s_cyprimes); if (unlikely(!gen)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -2950,20 +3026,20 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___8iterator_2generator1(__py
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 97, __pyx_L1_error)
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 97, __pyx_L1_error) }
-  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self->ar_len); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 101, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 101, __pyx_L1_error) }
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self->ar_len); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
     __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
     __pyx_t_4 = NULL;
   } else {
-    __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_4 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
@@ -2971,17 +3047,17 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___8iterator_2generator1(__py
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 97, __pyx_L1_error)
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 101, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       } else {
         if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 97, __pyx_L1_error)
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 101, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       }
@@ -2991,7 +3067,7 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___8iterator_2generator1(__py
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 97, __pyx_L1_error)
+          else __PYX_ERR(0, 101, __pyx_L1_error)
         }
         break;
       }
@@ -3002,28 +3078,28 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___8iterator_2generator1(__py
     __Pyx_GIVEREF(__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "cyprimes.pyx":98
+    /* "cyprimes.pyx":102
  *                 yield 2
  *                 yield from (i * 2 + 3 for i in range(self.ar_len)
  *                             if self.get_bit(i) == 0)             # <<<<<<<<<<<<<<
  *         return iterator()
  * 
  */
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 98, __pyx_L1_error) }
-    __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_cur_scope->__pyx_v_i); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L1_error)
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 102, __pyx_L1_error) }
+    __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_cur_scope->__pyx_v_i); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L1_error)
     __pyx_t_6 = ((((struct __pyx_vtabstruct_8cyprimes_Primes *)__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self->__pyx_vtab)->get_bit(__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self, __pyx_t_5) == 0) != 0);
     if (__pyx_t_6) {
 
-      /* "cyprimes.pyx":97
+      /* "cyprimes.pyx":101
  *             if self.limit >= 2:
  *                 yield 2
  *                 yield from (i * 2 + 3 for i in range(self.ar_len)             # <<<<<<<<<<<<<<
  *                             if self.get_bit(i) == 0)
  *         return iterator()
  */
-      __pyx_t_2 = PyNumber_Multiply(__pyx_cur_scope->__pyx_v_i, __pyx_int_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+      __pyx_t_2 = PyNumber_Multiply(__pyx_cur_scope->__pyx_v_i, __pyx_int_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_t_2, __pyx_int_3, 3, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 97, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_t_2, __pyx_int_3, 3, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 101, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_r = __pyx_t_7;
@@ -3044,9 +3120,9 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___8iterator_2generator1(__py
       __Pyx_XGOTREF(__pyx_t_1);
       __pyx_t_3 = __pyx_cur_scope->__pyx_t_1;
       __pyx_t_4 = __pyx_cur_scope->__pyx_t_2;
-      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 97, __pyx_L1_error)
+      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 101, __pyx_L1_error)
 
-      /* "cyprimes.pyx":98
+      /* "cyprimes.pyx":102
  *                 yield 2
  *                 yield from (i * 2 + 3 for i in range(self.ar_len)
  *                             if self.get_bit(i) == 0)             # <<<<<<<<<<<<<<
@@ -3055,7 +3131,7 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___8iterator_2generator1(__py
  */
     }
 
-    /* "cyprimes.pyx":97
+    /* "cyprimes.pyx":101
  *             if self.limit >= 2:
  *                 yield 2
  *                 yield from (i * 2 + 3 for i in range(self.ar_len)             # <<<<<<<<<<<<<<
@@ -3085,7 +3161,7 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___8iterator_2generator1(__py
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":94
+/* "cyprimes.pyx":98
  * 
  *     def __iter__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
@@ -3105,7 +3181,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_8__iter___iterator(PyObject *__pyx_s
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_8cyprimes___pyx_scope_struct_1_iterator *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 94, __pyx_L1_error)
+    __PYX_ERR(0, 98, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -3113,7 +3189,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_8__iter___iterator(PyObject *__pyx_s
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_8cyprimes_6Primes_8__iter___2generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_iterator, __pyx_n_s_iter___locals_iterator, __pyx_n_s_cyprimes); if (unlikely(!gen)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_8cyprimes_6Primes_8__iter___2generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_iterator, __pyx_n_s_iter___locals_iterator, __pyx_n_s_cyprimes); if (unlikely(!gen)) __PYX_ERR(0, 98, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -3149,20 +3225,20 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___2generator(__pyx_Coroutine
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 98, __pyx_L1_error)
 
-  /* "cyprimes.pyx":95
+  /* "cyprimes.pyx":99
  *     def __iter__(self):
  *         def iterator():
  *             if self.limit >= 2:             # <<<<<<<<<<<<<<
  *                 yield 2
  *                 yield from (i * 2 + 3 for i in range(self.ar_len)
  */
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 95, __pyx_L1_error) }
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 99, __pyx_L1_error) }
   __pyx_t_1 = ((__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self->limit >= 2) != 0);
   if (__pyx_t_1) {
 
-    /* "cyprimes.pyx":96
+    /* "cyprimes.pyx":100
  *         def iterator():
  *             if self.limit >= 2:
  *                 yield 2             # <<<<<<<<<<<<<<
@@ -3178,16 +3254,16 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___2generator(__pyx_Coroutine
     __pyx_generator->resume_label = 1;
     return __pyx_r;
     __pyx_L5_resume_from_yield:;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 96, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 100, __pyx_L1_error)
 
-    /* "cyprimes.pyx":97
+    /* "cyprimes.pyx":101
  *             if self.limit >= 2:
  *                 yield 2
  *                 yield from (i * 2 + 3 for i in range(self.ar_len)             # <<<<<<<<<<<<<<
  *                             if self.get_bit(i) == 0)
  *         return iterator()
  */
-    __pyx_t_2 = __pyx_pf_8cyprimes_6Primes_8__iter___8iterator_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_2 = __pyx_pf_8cyprimes_6Primes_8__iter___8iterator_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __Pyx_Generator_Yield_From(__pyx_generator, __pyx_t_2);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3200,16 +3276,16 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___2generator(__pyx_Coroutine
       __pyx_generator->resume_label = 2;
       return __pyx_r;
       __pyx_L6_resume_from_yield_from:;
-      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 97, __pyx_L1_error)
+      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 101, __pyx_L1_error)
     } else {
       PyObject* exc_type = __Pyx_PyErr_Occurred();
       if (exc_type) {
         if (likely(exc_type == PyExc_StopIteration || (exc_type != PyExc_GeneratorExit && __Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration)))) PyErr_Clear();
-        else __PYX_ERR(0, 97, __pyx_L1_error)
+        else __PYX_ERR(0, 101, __pyx_L1_error)
       }
     }
 
-    /* "cyprimes.pyx":95
+    /* "cyprimes.pyx":99
  *     def __iter__(self):
  *         def iterator():
  *             if self.limit >= 2:             # <<<<<<<<<<<<<<
@@ -3219,7 +3295,7 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___2generator(__pyx_Coroutine
   }
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
 
-  /* "cyprimes.pyx":94
+  /* "cyprimes.pyx":98
  * 
  *     def __iter__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
@@ -3244,7 +3320,7 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_8__iter___2generator(__pyx_Coroutine
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":93
+/* "cyprimes.pyx":97
  *         return self.get_bit((num - 3) // 2) == 0
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -3266,7 +3342,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_10__iter__(struct __pyx_obj_8cyprime
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_8cyprimes___pyx_scope_struct____iter__ *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 93, __pyx_L1_error)
+    __PYX_ERR(0, 97, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -3274,19 +3350,19 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_10__iter__(struct __pyx_obj_8cyprime
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
 
-  /* "cyprimes.pyx":94
+  /* "cyprimes.pyx":98
  * 
  *     def __iter__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
  *             if self.limit >= 2:
  *                 yield 2
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_8cyprimes_6Primes_8__iter___1iterator, 0, __pyx_n_s_iter___locals_iterator, ((PyObject*)__pyx_cur_scope), __pyx_n_s_cyprimes, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_8cyprimes_6Primes_8__iter___1iterator, 0, __pyx_n_s_iter___locals_iterator, ((PyObject*)__pyx_cur_scope), __pyx_n_s_cyprimes, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_iterator = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cyprimes.pyx":99
+  /* "cyprimes.pyx":103
  *                 yield from (i * 2 + 3 for i in range(self.ar_len)
  *                             if self.get_bit(i) == 0)
  *         return iterator()             # <<<<<<<<<<<<<<
@@ -3294,13 +3370,13 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_10__iter__(struct __pyx_obj_8cyprime
  *     def __reversed__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_pf_8cyprimes_6Primes_8__iter___iterator(__pyx_v_iterator); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_8cyprimes_6Primes_8__iter___iterator(__pyx_v_iterator); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cyprimes.pyx":93
+  /* "cyprimes.pyx":97
  *         return self.get_bit((num - 3) // 2) == 0
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -3321,7 +3397,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_10__iter__(struct __pyx_obj_8cyprime
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":101
+/* "cyprimes.pyx":105
  *         return iterator()
  * 
  *     def __reversed__(self):             # <<<<<<<<<<<<<<
@@ -3343,12 +3419,12 @@ static PyObject *__pyx_pw_8cyprimes_6Primes_13__reversed__(PyObject *__pyx_v_sel
 }
 static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___2generator2(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "cyprimes.pyx":102
+/* "cyprimes.pyx":106
  * 
  *     def __reversed__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  */
 
 /* Python wrapper */
@@ -3366,10 +3442,10 @@ static PyObject *__pyx_pw_8cyprimes_6Primes_12__reversed___1iterator(PyObject *_
 }
 static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___8iterator_2generator3(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "cyprimes.pyx":104
+/* "cyprimes.pyx":108
  *         def iterator():
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)             # <<<<<<<<<<<<<<
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)             # <<<<<<<<<<<<<<
  *                             if self.get_bit(i) == 0)
  *                 yield 2
  */
@@ -3386,7 +3462,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_12__reversed___8iterator_genexpr(PyO
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_8cyprimes___pyx_scope_struct_5_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 104, __pyx_L1_error)
+    __PYX_ERR(0, 108, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -3394,7 +3470,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_12__reversed___8iterator_genexpr(PyO
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_8cyprimes_6Primes_12__reversed___8iterator_2generator3, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_reversed___locals_iterator_loc, __pyx_n_s_cyprimes); if (unlikely(!gen)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_8cyprimes_6Primes_12__reversed___8iterator_2generator3, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_reversed___locals_iterator_loc, __pyx_n_s_cyprimes); if (unlikely(!gen)) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -3434,11 +3510,11 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___8iterator_2generator3
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 104, __pyx_L1_error)
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 104, __pyx_L1_error) }
-  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self->ar_len); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 108, __pyx_L1_error)
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 108, __pyx_L1_error) }
+  __pyx_t_1 = __Pyx_PyInt_From_long((__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self->ar_len - 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -3449,16 +3525,16 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___8iterator_2generator3
   __Pyx_GIVEREF(__pyx_int_neg_1);
   PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_int_neg_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
     __pyx_t_4 = NULL;
   } else {
-    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -3466,17 +3542,17 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___8iterator_2generator3
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 104, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 108, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 104, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 108, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -3486,7 +3562,7 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___8iterator_2generator3
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 104, __pyx_L1_error)
+          else __PYX_ERR(0, 108, __pyx_L1_error)
         }
         break;
       }
@@ -3497,28 +3573,28 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___8iterator_2generator3
     __Pyx_GIVEREF(__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "cyprimes.pyx":105
+    /* "cyprimes.pyx":109
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  *                             if self.get_bit(i) == 0)             # <<<<<<<<<<<<<<
  *                 yield 2
  *         return iterator()
  */
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 105, __pyx_L1_error) }
-    __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_cur_scope->__pyx_v_i); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 105, __pyx_L1_error)
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 109, __pyx_L1_error) }
+    __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_cur_scope->__pyx_v_i); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 109, __pyx_L1_error)
     __pyx_t_6 = ((((struct __pyx_vtabstruct_8cyprimes_Primes *)__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self->__pyx_vtab)->get_bit(__pyx_cur_scope->__pyx_outer_scope->__pyx_outer_scope->__pyx_v_self, __pyx_t_5) == 0) != 0);
     if (__pyx_t_6) {
 
-      /* "cyprimes.pyx":104
+      /* "cyprimes.pyx":108
  *         def iterator():
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)             # <<<<<<<<<<<<<<
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)             # <<<<<<<<<<<<<<
  *                             if self.get_bit(i) == 0)
  *                 yield 2
  */
-      __pyx_t_1 = PyNumber_Multiply(__pyx_cur_scope->__pyx_v_i, __pyx_int_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+      __pyx_t_1 = PyNumber_Multiply(__pyx_cur_scope->__pyx_v_i, __pyx_int_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_t_1, __pyx_int_3, 3, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 104, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_t_1, __pyx_int_3, 3, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 108, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_r = __pyx_t_7;
@@ -3539,21 +3615,21 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___8iterator_2generator3
       __Pyx_XGOTREF(__pyx_t_2);
       __pyx_t_3 = __pyx_cur_scope->__pyx_t_1;
       __pyx_t_4 = __pyx_cur_scope->__pyx_t_2;
-      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 104, __pyx_L1_error)
+      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 108, __pyx_L1_error)
 
-      /* "cyprimes.pyx":105
+      /* "cyprimes.pyx":109
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  *                             if self.get_bit(i) == 0)             # <<<<<<<<<<<<<<
  *                 yield 2
  *         return iterator()
  */
     }
 
-    /* "cyprimes.pyx":104
+    /* "cyprimes.pyx":108
  *         def iterator():
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)             # <<<<<<<<<<<<<<
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)             # <<<<<<<<<<<<<<
  *                             if self.get_bit(i) == 0)
  *                 yield 2
  */
@@ -3580,12 +3656,12 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___8iterator_2generator3
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":102
+/* "cyprimes.pyx":106
  * 
  *     def __reversed__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  */
 
 static PyObject *__pyx_pf_8cyprimes_6Primes_12__reversed___iterator(PyObject *__pyx_self) {
@@ -3600,7 +3676,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_12__reversed___iterator(PyObject *__
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_8cyprimes___pyx_scope_struct_4_iterator *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 102, __pyx_L1_error)
+    __PYX_ERR(0, 106, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -3608,7 +3684,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_12__reversed___iterator(PyObject *__
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_8cyprimes_6Primes_12__reversed___2generator2, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_iterator, __pyx_n_s_reversed___locals_iterator, __pyx_n_s_cyprimes); if (unlikely(!gen)) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_8cyprimes_6Primes_12__reversed___2generator2, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_iterator, __pyx_n_s_reversed___locals_iterator, __pyx_n_s_cyprimes); if (unlikely(!gen)) __PYX_ERR(0, 106, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -3644,27 +3720,27 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___2generator2(__pyx_Cor
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 102, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 106, __pyx_L1_error)
 
-  /* "cyprimes.pyx":103
+  /* "cyprimes.pyx":107
  *     def __reversed__(self):
  *         def iterator():
  *             if self.limit >= 2:             # <<<<<<<<<<<<<<
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  *                             if self.get_bit(i) == 0)
  */
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 103, __pyx_L1_error) }
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 107, __pyx_L1_error) }
   __pyx_t_1 = ((__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self->limit >= 2) != 0);
   if (__pyx_t_1) {
 
-    /* "cyprimes.pyx":104
+    /* "cyprimes.pyx":108
  *         def iterator():
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)             # <<<<<<<<<<<<<<
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)             # <<<<<<<<<<<<<<
  *                             if self.get_bit(i) == 0)
  *                 yield 2
  */
-    __pyx_t_2 = __pyx_pf_8cyprimes_6Primes_12__reversed___8iterator_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_2 = __pyx_pf_8cyprimes_6Primes_12__reversed___8iterator_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __Pyx_Generator_Yield_From(__pyx_generator, __pyx_t_2);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3677,17 +3753,17 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___2generator2(__pyx_Cor
       __pyx_generator->resume_label = 1;
       return __pyx_r;
       __pyx_L5_resume_from_yield_from:;
-      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 104, __pyx_L1_error)
+      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 108, __pyx_L1_error)
     } else {
       PyObject* exc_type = __Pyx_PyErr_Occurred();
       if (exc_type) {
         if (likely(exc_type == PyExc_StopIteration || (exc_type != PyExc_GeneratorExit && __Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration)))) PyErr_Clear();
-        else __PYX_ERR(0, 104, __pyx_L1_error)
+        else __PYX_ERR(0, 108, __pyx_L1_error)
       }
     }
 
-    /* "cyprimes.pyx":106
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+    /* "cyprimes.pyx":110
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  *                             if self.get_bit(i) == 0)
  *                 yield 2             # <<<<<<<<<<<<<<
  *         return iterator()
@@ -3702,24 +3778,24 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___2generator2(__pyx_Cor
     __pyx_generator->resume_label = 2;
     return __pyx_r;
     __pyx_L6_resume_from_yield:;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 106, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 110, __pyx_L1_error)
 
-    /* "cyprimes.pyx":103
+    /* "cyprimes.pyx":107
  *     def __reversed__(self):
  *         def iterator():
  *             if self.limit >= 2:             # <<<<<<<<<<<<<<
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  *                             if self.get_bit(i) == 0)
  */
   }
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
 
-  /* "cyprimes.pyx":102
+  /* "cyprimes.pyx":106
  * 
  *     def __reversed__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  */
 
   /* function exit code */
@@ -3739,7 +3815,7 @@ static PyObject *__pyx_gb_8cyprimes_6Primes_12__reversed___2generator2(__pyx_Cor
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":101
+/* "cyprimes.pyx":105
  *         return iterator()
  * 
  *     def __reversed__(self):             # <<<<<<<<<<<<<<
@@ -3761,7 +3837,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_12__reversed__(struct __pyx_obj_8cyp
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_8cyprimes___pyx_scope_struct_3___reversed__ *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 101, __pyx_L1_error)
+    __PYX_ERR(0, 105, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -3769,19 +3845,19 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_12__reversed__(struct __pyx_obj_8cyp
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
 
-  /* "cyprimes.pyx":102
+  /* "cyprimes.pyx":106
  * 
  *     def __reversed__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_8cyprimes_6Primes_12__reversed___1iterator, 0, __pyx_n_s_reversed___locals_iterator, ((PyObject*)__pyx_cur_scope), __pyx_n_s_cyprimes, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_8cyprimes_6Primes_12__reversed___1iterator, 0, __pyx_n_s_reversed___locals_iterator, ((PyObject*)__pyx_cur_scope), __pyx_n_s_cyprimes, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_iterator = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cyprimes.pyx":107
+  /* "cyprimes.pyx":111
  *                             if self.get_bit(i) == 0)
  *                 yield 2
  *         return iterator()             # <<<<<<<<<<<<<<
@@ -3789,13 +3865,13 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_12__reversed__(struct __pyx_obj_8cyp
  *     def __getitem__(self, idx):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_pf_8cyprimes_6Primes_12__reversed___iterator(__pyx_v_iterator); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_8cyprimes_6Primes_12__reversed___iterator(__pyx_v_iterator); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cyprimes.pyx":101
+  /* "cyprimes.pyx":105
  *         return iterator()
  * 
  *     def __reversed__(self):             # <<<<<<<<<<<<<<
@@ -3816,7 +3892,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_12__reversed__(struct __pyx_obj_8cyp
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":109
+/* "cyprimes.pyx":113
  *         return iterator()
  * 
  *     def __getitem__(self, idx):             # <<<<<<<<<<<<<<
@@ -3864,14 +3940,14 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
   __Pyx_RefNannySetupContext("__getitem__", 0);
   __Pyx_INCREF(__pyx_v_idx);
 
-  /* "cyprimes.pyx":110
+  /* "cyprimes.pyx":114
  * 
  *     def __getitem__(self, idx):
  *         length = self.__len__()             # <<<<<<<<<<<<<<
  *         if isinstance(idx, slice):
  *             lst = []
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_len); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_len); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3885,13 +3961,13 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_length = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cyprimes.pyx":111
+  /* "cyprimes.pyx":115
  *     def __getitem__(self, idx):
  *         length = self.__len__()
  *         if isinstance(idx, slice):             # <<<<<<<<<<<<<<
@@ -3902,26 +3978,26 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
   __pyx_t_5 = (__pyx_t_4 != 0);
   if (__pyx_t_5) {
 
-    /* "cyprimes.pyx":112
+    /* "cyprimes.pyx":116
  *         length = self.__len__()
  *         if isinstance(idx, slice):
  *             lst = []             # <<<<<<<<<<<<<<
  *             for x in range(*idx.indices(length)):
  *                 lst.append(self.__getitem__(x))
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_lst = ((PyObject*)__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "cyprimes.pyx":113
+    /* "cyprimes.pyx":117
  *         if isinstance(idx, slice):
  *             lst = []
  *             for x in range(*idx.indices(length)):             # <<<<<<<<<<<<<<
  *                 lst.append(self.__getitem__(x))
  *             return tuple(lst)
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_idx, __pyx_n_s_indices); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_idx, __pyx_n_s_indices); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3935,22 +4011,22 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
     }
     __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_length) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_length);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PySequence_Tuple(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PySequence_Tuple(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
       __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
       __pyx_t_7 = NULL;
     } else {
-      __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
+      __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 113, __pyx_L1_error)
+      __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 117, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     for (;;) {
@@ -3958,17 +4034,17 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
         if (likely(PyList_CheckExact(__pyx_t_2))) {
           if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 113, __pyx_L1_error)
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 117, __pyx_L1_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         } else {
           if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 113, __pyx_L1_error)
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 117, __pyx_L1_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         }
@@ -3978,7 +4054,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 113, __pyx_L1_error)
+            else __PYX_ERR(0, 117, __pyx_L1_error)
           }
           break;
         }
@@ -3987,14 +4063,14 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
       __Pyx_XDECREF_SET(__pyx_v_x, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "cyprimes.pyx":114
+      /* "cyprimes.pyx":118
  *             lst = []
  *             for x in range(*idx.indices(length)):
  *                 lst.append(self.__getitem__(x))             # <<<<<<<<<<<<<<
  *             return tuple(lst)
  *         if idx < 0:
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getitem); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 114, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getitem); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 118, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_8 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -4008,13 +4084,13 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
       }
       __pyx_t_1 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_8, __pyx_v_x) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_x);
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_lst, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 114, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_lst, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 118, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "cyprimes.pyx":113
+      /* "cyprimes.pyx":117
  *         if isinstance(idx, slice):
  *             lst = []
  *             for x in range(*idx.indices(length)):             # <<<<<<<<<<<<<<
@@ -4024,7 +4100,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "cyprimes.pyx":115
+    /* "cyprimes.pyx":119
  *             for x in range(*idx.indices(length)):
  *                 lst.append(self.__getitem__(x))
  *             return tuple(lst)             # <<<<<<<<<<<<<<
@@ -4032,13 +4108,13 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
  *             idx = length + idx
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = PyList_AsTuple(__pyx_v_lst); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __pyx_t_2 = PyList_AsTuple(__pyx_v_lst); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "cyprimes.pyx":111
+    /* "cyprimes.pyx":115
  *     def __getitem__(self, idx):
  *         length = self.__len__()
  *         if isinstance(idx, slice):             # <<<<<<<<<<<<<<
@@ -4047,31 +4123,31 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
  */
   }
 
-  /* "cyprimes.pyx":116
+  /* "cyprimes.pyx":120
  *                 lst.append(self.__getitem__(x))
  *             return tuple(lst)
  *         if idx < 0:             # <<<<<<<<<<<<<<
  *             idx = length + idx
  *         if idx < 0 or idx >= length:
  */
-  __pyx_t_2 = PyObject_RichCompare(__pyx_v_idx, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_v_idx, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_5) {
 
-    /* "cyprimes.pyx":117
+    /* "cyprimes.pyx":121
  *             return tuple(lst)
  *         if idx < 0:
  *             idx = length + idx             # <<<<<<<<<<<<<<
  *         if idx < 0 or idx >= length:
  *             raise IndexError('list index out of range')
  */
-    __pyx_t_2 = PyNumber_Add(__pyx_v_length, __pyx_v_idx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Add(__pyx_v_length, __pyx_v_idx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF_SET(__pyx_v_idx, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "cyprimes.pyx":116
+    /* "cyprimes.pyx":120
  *                 lst.append(self.__getitem__(x))
  *             return tuple(lst)
  *         if idx < 0:             # <<<<<<<<<<<<<<
@@ -4080,42 +4156,42 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
  */
   }
 
-  /* "cyprimes.pyx":118
+  /* "cyprimes.pyx":122
  *         if idx < 0:
  *             idx = length + idx
  *         if idx < 0 or idx >= length:             # <<<<<<<<<<<<<<
  *             raise IndexError('list index out of range')
  *         if idx == 0:
  */
-  __pyx_t_2 = PyObject_RichCompare(__pyx_v_idx, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_v_idx, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (!__pyx_t_4) {
   } else {
     __pyx_t_5 = __pyx_t_4;
     goto __pyx_L8_bool_binop_done;
   }
-  __pyx_t_2 = PyObject_RichCompare(__pyx_v_idx, __pyx_v_length, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_v_idx, __pyx_v_length, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_5 = __pyx_t_4;
   __pyx_L8_bool_binop_done:;
   if (unlikely(__pyx_t_5)) {
 
-    /* "cyprimes.pyx":119
+    /* "cyprimes.pyx":123
  *             idx = length + idx
  *         if idx < 0 or idx >= length:
  *             raise IndexError('list index out of range')             # <<<<<<<<<<<<<<
  *         if idx == 0:
  *             return 2
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_IndexError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_IndexError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 119, __pyx_L1_error)
+    __PYX_ERR(0, 123, __pyx_L1_error)
 
-    /* "cyprimes.pyx":118
+    /* "cyprimes.pyx":122
  *         if idx < 0:
  *             idx = length + idx
  *         if idx < 0 or idx >= length:             # <<<<<<<<<<<<<<
@@ -4124,20 +4200,20 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
  */
   }
 
-  /* "cyprimes.pyx":120
+  /* "cyprimes.pyx":124
  *         if idx < 0 or idx >= length:
  *             raise IndexError('list index out of range')
  *         if idx == 0:             # <<<<<<<<<<<<<<
  *             return 2
  *         cdef long c = 0, i = <long> idx, k
  */
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_idx, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_idx, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_5) {
 
-    /* "cyprimes.pyx":121
+    /* "cyprimes.pyx":125
  *             raise IndexError('list index out of range')
  *         if idx == 0:
  *             return 2             # <<<<<<<<<<<<<<
@@ -4149,7 +4225,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
     __pyx_r = __pyx_int_2;
     goto __pyx_L0;
 
-    /* "cyprimes.pyx":120
+    /* "cyprimes.pyx":124
  *         if idx < 0 or idx >= length:
  *             raise IndexError('list index out of range')
  *         if idx == 0:             # <<<<<<<<<<<<<<
@@ -4158,7 +4234,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
  */
   }
 
-  /* "cyprimes.pyx":122
+  /* "cyprimes.pyx":126
  *         if idx == 0:
  *             return 2
  *         cdef long c = 0, i = <long> idx, k             # <<<<<<<<<<<<<<
@@ -4166,10 +4242,10 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
  *             if self.get_bit(k) == 0:
  */
   __pyx_v_c = 0;
-  __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_v_idx); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_v_idx); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L1_error)
   __pyx_v_i = ((long)__pyx_t_10);
 
-  /* "cyprimes.pyx":123
+  /* "cyprimes.pyx":127
  *             return 2
  *         cdef long c = 0, i = <long> idx, k
  *         for k in range(self.ar_len):             # <<<<<<<<<<<<<<
@@ -4181,7 +4257,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
   for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_k = __pyx_t_12;
 
-    /* "cyprimes.pyx":124
+    /* "cyprimes.pyx":128
  *         cdef long c = 0, i = <long> idx, k
  *         for k in range(self.ar_len):
  *             if self.get_bit(k) == 0:             # <<<<<<<<<<<<<<
@@ -4191,7 +4267,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
     __pyx_t_5 = ((((struct __pyx_vtabstruct_8cyprimes_Primes *)__pyx_v_self->__pyx_vtab)->get_bit(__pyx_v_self, __pyx_v_k) == 0) != 0);
     if (__pyx_t_5) {
 
-      /* "cyprimes.pyx":125
+      /* "cyprimes.pyx":129
  *         for k in range(self.ar_len):
  *             if self.get_bit(k) == 0:
  *                 c += 1             # <<<<<<<<<<<<<<
@@ -4200,7 +4276,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
  */
       __pyx_v_c = (__pyx_v_c + 1);
 
-      /* "cyprimes.pyx":126
+      /* "cyprimes.pyx":130
  *             if self.get_bit(k) == 0:
  *                 c += 1
  *                 if c == i:             # <<<<<<<<<<<<<<
@@ -4210,7 +4286,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
       __pyx_t_5 = ((__pyx_v_c == __pyx_v_i) != 0);
       if (__pyx_t_5) {
 
-        /* "cyprimes.pyx":127
+        /* "cyprimes.pyx":131
  *                 c += 1
  *                 if c == i:
  *                     return k * 2 + 3             # <<<<<<<<<<<<<<
@@ -4218,13 +4294,13 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
  *     def _check_range(self, num):
  */
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_2 = __Pyx_PyInt_From_long(((__pyx_v_k * 2) + 3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 127, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyInt_From_long(((__pyx_v_k * 2) + 3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __pyx_r = __pyx_t_2;
         __pyx_t_2 = 0;
         goto __pyx_L0;
 
-        /* "cyprimes.pyx":126
+        /* "cyprimes.pyx":130
  *             if self.get_bit(k) == 0:
  *                 c += 1
  *                 if c == i:             # <<<<<<<<<<<<<<
@@ -4233,7 +4309,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
  */
       }
 
-      /* "cyprimes.pyx":124
+      /* "cyprimes.pyx":128
  *         cdef long c = 0, i = <long> idx, k
  *         for k in range(self.ar_len):
  *             if self.get_bit(k) == 0:             # <<<<<<<<<<<<<<
@@ -4243,7 +4319,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
     }
   }
 
-  /* "cyprimes.pyx":109
+  /* "cyprimes.pyx":113
  *         return iterator()
  * 
  *     def __getitem__(self, idx):             # <<<<<<<<<<<<<<
@@ -4271,7 +4347,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_14__getitem__(struct __pyx_obj_8cypr
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":129
+/* "cyprimes.pyx":133
  *                     return k * 2 + 3
  * 
  *     def _check_range(self, num):             # <<<<<<<<<<<<<<
@@ -4304,51 +4380,51 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_16_check_range(struct __pyx_obj_8cyp
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_check_range", 0);
 
-  /* "cyprimes.pyx":130
+  /* "cyprimes.pyx":134
  * 
  *     def _check_range(self, num):
  *         if num < 0 or num > self.limit:             # <<<<<<<<<<<<<<
  *             raise ValueError('out of range 0..%d' % self.limit)
  * 
  */
-  __pyx_t_2 = PyObject_RichCompare(__pyx_v_num, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_v_num, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 134, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (!__pyx_t_3) {
   } else {
     __pyx_t_1 = __pyx_t_3;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_self->limit); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_self->limit); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyObject_RichCompare(__pyx_v_num, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_v_num, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 134, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 134, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_1 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "cyprimes.pyx":131
+    /* "cyprimes.pyx":135
  *     def _check_range(self, num):
  *         if num < 0 or num > self.limit:
  *             raise ValueError('out of range 0..%d' % self.limit)             # <<<<<<<<<<<<<<
  * 
  *     def index(self, num):
  */
-    __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_self->limit); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_self->limit); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 135, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = __Pyx_PyString_Format(__pyx_kp_s_out_of_range_0_d, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyString_Format(__pyx_kp_s_out_of_range_0_d, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 135, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 135, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 131, __pyx_L1_error)
+    __PYX_ERR(0, 135, __pyx_L1_error)
 
-    /* "cyprimes.pyx":130
+    /* "cyprimes.pyx":134
  * 
  *     def _check_range(self, num):
  *         if num < 0 or num > self.limit:             # <<<<<<<<<<<<<<
@@ -4357,7 +4433,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_16_check_range(struct __pyx_obj_8cyp
  */
   }
 
-  /* "cyprimes.pyx":129
+  /* "cyprimes.pyx":133
  *                     return k * 2 + 3
  * 
  *     def _check_range(self, num):             # <<<<<<<<<<<<<<
@@ -4379,7 +4455,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_16_check_range(struct __pyx_obj_8cyp
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":133
+/* "cyprimes.pyx":137
  *             raise ValueError('out of range 0..%d' % self.limit)
  * 
  *     def index(self, num):             # <<<<<<<<<<<<<<
@@ -4419,14 +4495,14 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("index", 0);
 
-  /* "cyprimes.pyx":134
+  /* "cyprimes.pyx":138
  * 
  *     def index(self, num):
  *         self._check_range(num)             # <<<<<<<<<<<<<<
  *         if num == 2:
  *             return 0
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_range); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_range); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -4440,25 +4516,25 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_num) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_num);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cyprimes.pyx":135
+  /* "cyprimes.pyx":139
  *     def index(self, num):
  *         self._check_range(num)
  *         if num == 2:             # <<<<<<<<<<<<<<
  *             return 0
  *         cdef long idx = <long> (num - 3) // 2
  */
-  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_num, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_num, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_4) {
 
-    /* "cyprimes.pyx":136
+    /* "cyprimes.pyx":140
  *         self._check_range(num)
  *         if num == 2:
  *             return 0             # <<<<<<<<<<<<<<
@@ -4470,7 +4546,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
     __pyx_r = __pyx_int_0;
     goto __pyx_L0;
 
-    /* "cyprimes.pyx":135
+    /* "cyprimes.pyx":139
  *     def index(self, num):
  *         self._check_range(num)
  *         if num == 2:             # <<<<<<<<<<<<<<
@@ -4479,40 +4555,40 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
  */
   }
 
-  /* "cyprimes.pyx":137
+  /* "cyprimes.pyx":141
  *         if num == 2:
  *             return 0
  *         cdef long idx = <long> (num - 3) // 2             # <<<<<<<<<<<<<<
  *         if num < 2 or num % 2 == 0 or self.get_bit(idx) == 1:
  *             raise ValueError('not prime')
  */
-  __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_num, __pyx_int_3, 3, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_num, __pyx_int_3, 3, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_idx = __Pyx_div_long(((long)__pyx_t_5), 2);
 
-  /* "cyprimes.pyx":138
+  /* "cyprimes.pyx":142
  *             return 0
  *         cdef long idx = <long> (num - 3) // 2
  *         if num < 2 or num % 2 == 0 or self.get_bit(idx) == 1:             # <<<<<<<<<<<<<<
  *             raise ValueError('not prime')
  *         cdef long c = 1, i
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_num, __pyx_int_2, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_num, __pyx_int_2, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (!__pyx_t_6) {
   } else {
     __pyx_t_4 = __pyx_t_6;
     goto __pyx_L5_bool_binop_done;
   }
-  __pyx_t_1 = __Pyx_PyInt_RemainderObjC(__pyx_v_num, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_RemainderObjC(__pyx_v_num, __pyx_int_2, 2, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (!__pyx_t_6) {
   } else {
@@ -4524,20 +4600,20 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
   __pyx_L5_bool_binop_done:;
   if (unlikely(__pyx_t_4)) {
 
-    /* "cyprimes.pyx":139
+    /* "cyprimes.pyx":143
  *         cdef long idx = <long> (num - 3) // 2
  *         if num < 2 or num % 2 == 0 or self.get_bit(idx) == 1:
  *             raise ValueError('not prime')             # <<<<<<<<<<<<<<
  *         cdef long c = 1, i
  *         for i in range(idx):
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 139, __pyx_L1_error)
+    __PYX_ERR(0, 143, __pyx_L1_error)
 
-    /* "cyprimes.pyx":138
+    /* "cyprimes.pyx":142
  *             return 0
  *         cdef long idx = <long> (num - 3) // 2
  *         if num < 2 or num % 2 == 0 or self.get_bit(idx) == 1:             # <<<<<<<<<<<<<<
@@ -4546,7 +4622,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
  */
   }
 
-  /* "cyprimes.pyx":140
+  /* "cyprimes.pyx":144
  *         if num < 2 or num % 2 == 0 or self.get_bit(idx) == 1:
  *             raise ValueError('not prime')
  *         cdef long c = 1, i             # <<<<<<<<<<<<<<
@@ -4555,7 +4631,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
  */
   __pyx_v_c = 1;
 
-  /* "cyprimes.pyx":141
+  /* "cyprimes.pyx":145
  *             raise ValueError('not prime')
  *         cdef long c = 1, i
  *         for i in range(idx):             # <<<<<<<<<<<<<<
@@ -4567,7 +4643,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
   for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "cyprimes.pyx":142
+    /* "cyprimes.pyx":146
  *         cdef long c = 1, i
  *         for i in range(idx):
  *             if self.get_bit(i) == 0:             # <<<<<<<<<<<<<<
@@ -4577,7 +4653,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
     __pyx_t_4 = ((((struct __pyx_vtabstruct_8cyprimes_Primes *)__pyx_v_self->__pyx_vtab)->get_bit(__pyx_v_self, __pyx_v_i) == 0) != 0);
     if (__pyx_t_4) {
 
-      /* "cyprimes.pyx":143
+      /* "cyprimes.pyx":147
  *         for i in range(idx):
  *             if self.get_bit(i) == 0:
  *                 c += 1             # <<<<<<<<<<<<<<
@@ -4586,7 +4662,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
  */
       __pyx_v_c = (__pyx_v_c + 1);
 
-      /* "cyprimes.pyx":142
+      /* "cyprimes.pyx":146
  *         cdef long c = 1, i
  *         for i in range(idx):
  *             if self.get_bit(i) == 0:             # <<<<<<<<<<<<<<
@@ -4596,7 +4672,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
     }
   }
 
-  /* "cyprimes.pyx":144
+  /* "cyprimes.pyx":148
  *             if self.get_bit(i) == 0:
  *                 c += 1
  *         return c             # <<<<<<<<<<<<<<
@@ -4604,13 +4680,13 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
  *     cdef bytes get_data(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cyprimes.pyx":133
+  /* "cyprimes.pyx":137
  *             raise ValueError('out of range 0..%d' % self.limit)
  * 
  *     def index(self, num):             # <<<<<<<<<<<<<<
@@ -4631,7 +4707,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_18index(struct __pyx_obj_8cyprimes_P
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":146
+/* "cyprimes.pyx":150
  *         return c
  * 
  *     cdef bytes get_data(self):             # <<<<<<<<<<<<<<
@@ -4648,7 +4724,7 @@ static PyObject *__pyx_f_8cyprimes_6Primes_get_data(struct __pyx_obj_8cyprimes_P
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_data", 0);
 
-  /* "cyprimes.pyx":147
+  /* "cyprimes.pyx":151
  * 
  *     cdef bytes get_data(self):
  *         return <bytes> (<char*> self.data)[:self.ar_size * sizeof(int)]             # <<<<<<<<<<<<<<
@@ -4656,14 +4732,14 @@ static PyObject *__pyx_f_8cyprimes_6Primes_get_data(struct __pyx_obj_8cyprimes_P
  *     cdef void set_data(self, bytes data, long length):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBytes_FromStringAndSize(((char *)__pyx_v_self->data) + 0, (__pyx_v_self->ar_size * (sizeof(int))) - 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBytes_FromStringAndSize(((char *)__pyx_v_self->data) + 0, (__pyx_v_self->ar_size * (sizeof(int))) - 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(((PyObject*)__pyx_t_1));
   __pyx_r = ((PyObject*)__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cyprimes.pyx":146
+  /* "cyprimes.pyx":150
  *         return c
  * 
  *     cdef bytes get_data(self):             # <<<<<<<<<<<<<<
@@ -4682,7 +4758,7 @@ static PyObject *__pyx_f_8cyprimes_6Primes_get_data(struct __pyx_obj_8cyprimes_P
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":149
+/* "cyprimes.pyx":153
  *         return <bytes> (<char*> self.data)[:self.ar_size * sizeof(int)]
  * 
  *     cdef void set_data(self, bytes data, long length):             # <<<<<<<<<<<<<<
@@ -4698,7 +4774,7 @@ static void __pyx_f_8cyprimes_6Primes_set_data(struct __pyx_obj_8cyprimes_Primes
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("set_data", 0);
 
-  /* "cyprimes.pyx":150
+  /* "cyprimes.pyx":154
  * 
  *     cdef void set_data(self, bytes data, long length):
  *         memcpy(self.data, <char*> data, self.ar_size * sizeof(int))             # <<<<<<<<<<<<<<
@@ -4707,12 +4783,12 @@ static void __pyx_f_8cyprimes_6Primes_set_data(struct __pyx_obj_8cyprimes_Primes
  */
   if (unlikely(__pyx_v_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-    __PYX_ERR(0, 150, __pyx_L1_error)
+    __PYX_ERR(0, 154, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyBytes_AsWritableString(__pyx_v_data); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBytes_AsWritableString(__pyx_v_data); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 154, __pyx_L1_error)
   (void)(memcpy(__pyx_v_self->data, ((char *)__pyx_t_1), (__pyx_v_self->ar_size * (sizeof(int)))));
 
-  /* "cyprimes.pyx":151
+  /* "cyprimes.pyx":155
  *     cdef void set_data(self, bytes data, long length):
  *         memcpy(self.data, <char*> data, self.ar_size * sizeof(int))
  *         self.len = length             # <<<<<<<<<<<<<<
@@ -4721,7 +4797,7 @@ static void __pyx_f_8cyprimes_6Primes_set_data(struct __pyx_obj_8cyprimes_Primes
  */
   __pyx_v_self->len = __pyx_v_length;
 
-  /* "cyprimes.pyx":149
+  /* "cyprimes.pyx":153
  *         return <bytes> (<char*> self.data)[:self.ar_size * sizeof(int)]
  * 
  *     cdef void set_data(self, bytes data, long length):             # <<<<<<<<<<<<<<
@@ -4737,7 +4813,7 @@ static void __pyx_f_8cyprimes_6Primes_set_data(struct __pyx_obj_8cyprimes_Primes
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cyprimes.pyx":153
+/* "cyprimes.pyx":157
  *         self.len = length
  * 
  *     def __reduce__(self):             # <<<<<<<<<<<<<<
@@ -4771,7 +4847,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_20__reduce__(struct __pyx_obj_8cypri
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__reduce__", 0);
 
-  /* "cyprimes.pyx":154
+  /* "cyprimes.pyx":158
  * 
  *     def __reduce__(self):
  *         return _reconstruct, (self.get_data(), self.limit, self.len)             # <<<<<<<<<<<<<<
@@ -4779,15 +4855,15 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_20__reduce__(struct __pyx_obj_8cypri
  * cpdef object _reconstruct(data, limit, length):
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_reconstruct); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_reconstruct); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = ((struct __pyx_vtabstruct_8cyprimes_Primes *)__pyx_v_self->__pyx_vtab)->get_data(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_8cyprimes_Primes *)__pyx_v_self->__pyx_vtab)->get_data(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_self->limit); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_self->limit); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_self->len); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_self->len); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_2);
@@ -4798,7 +4874,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_20__reduce__(struct __pyx_obj_8cypri
   __pyx_t_2 = 0;
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
@@ -4810,7 +4886,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_20__reduce__(struct __pyx_obj_8cypri
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "cyprimes.pyx":153
+  /* "cyprimes.pyx":157
  *         self.len = length
  * 
  *     def __reduce__(self):             # <<<<<<<<<<<<<<
@@ -4833,7 +4909,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_20__reduce__(struct __pyx_obj_8cypri
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":40
+/* "cyprimes.pyx":42
  * cdef class Primes:
  *     cdef int *data
  *     cdef readonly long limit             # <<<<<<<<<<<<<<
@@ -4863,7 +4939,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_5limit___get__(struct __pyx_obj_8cyp
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_self->limit); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_self->limit); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4880,7 +4956,7 @@ static PyObject *__pyx_pf_8cyprimes_6Primes_5limit___get__(struct __pyx_obj_8cyp
   return __pyx_r;
 }
 
-/* "cyprimes.pyx":156
+/* "cyprimes.pyx":160
  *         return _reconstruct, (self.get_data(), self.limit, self.len)
  * 
  * cpdef object _reconstruct(data, limit, length):             # <<<<<<<<<<<<<<
@@ -4901,36 +4977,36 @@ static PyObject *__pyx_f_8cyprimes__reconstruct(PyObject *__pyx_v_data, PyObject
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_reconstruct", 0);
 
-  /* "cyprimes.pyx":157
+  /* "cyprimes.pyx":161
  * 
  * cpdef object _reconstruct(data, limit, length):
  *     obj = Primes.__new__(Primes, limit)             # <<<<<<<<<<<<<<
  *     Primes.set_data(obj, data, length)
  *     return obj
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_limit);
   __Pyx_GIVEREF(__pyx_v_limit);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_limit);
-  __pyx_t_2 = ((PyObject *)__pyx_tp_new_8cyprimes_Primes(((PyTypeObject *)__pyx_ptype_8cyprimes_Primes), __pyx_t_1, NULL)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_2 = ((PyObject *)__pyx_tp_new_8cyprimes_Primes(((PyTypeObject *)__pyx_ptype_8cyprimes_Primes), __pyx_t_1, NULL)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(((PyObject *)__pyx_t_2));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_obj = ((PyObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "cyprimes.pyx":158
+  /* "cyprimes.pyx":162
  * cpdef object _reconstruct(data, limit, length):
  *     obj = Primes.__new__(Primes, limit)
  *     Primes.set_data(obj, data, length)             # <<<<<<<<<<<<<<
  *     return obj
  */
-  if (!(likely(((__pyx_v_obj) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_obj, __pyx_ptype_8cyprimes_Primes))))) __PYX_ERR(0, 158, __pyx_L1_error)
-  if (!(likely(PyBytes_CheckExact(__pyx_v_data))||((__pyx_v_data) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_v_data)->tp_name), 0))) __PYX_ERR(0, 158, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyInt_As_long(__pyx_v_length); if (unlikely((__pyx_t_3 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 158, __pyx_L1_error)
+  if (!(likely(((__pyx_v_obj) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_obj, __pyx_ptype_8cyprimes_Primes))))) __PYX_ERR(0, 162, __pyx_L1_error)
+  if (!(likely(PyBytes_CheckExact(__pyx_v_data))||((__pyx_v_data) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_v_data)->tp_name), 0))) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_long(__pyx_v_length); if (unlikely((__pyx_t_3 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 162, __pyx_L1_error)
   __pyx_f_8cyprimes_6Primes_set_data(((struct __pyx_obj_8cyprimes_Primes *)__pyx_v_obj), ((PyObject*)__pyx_v_data), __pyx_t_3);
 
-  /* "cyprimes.pyx":159
+  /* "cyprimes.pyx":163
  *     obj = Primes.__new__(Primes, limit)
  *     Primes.set_data(obj, data, length)
  *     return obj             # <<<<<<<<<<<<<<
@@ -4940,7 +5016,7 @@ static PyObject *__pyx_f_8cyprimes__reconstruct(PyObject *__pyx_v_data, PyObject
   __pyx_r = __pyx_v_obj;
   goto __pyx_L0;
 
-  /* "cyprimes.pyx":156
+  /* "cyprimes.pyx":160
  *         return _reconstruct, (self.get_data(), self.limit, self.len)
  * 
  * cpdef object _reconstruct(data, limit, length):             # <<<<<<<<<<<<<<
@@ -4998,17 +5074,17 @@ static PyObject *__pyx_pw_8cyprimes_3_reconstruct(PyObject *__pyx_self, PyObject
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_limit)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_reconstruct", 1, 3, 3, 1); __PYX_ERR(0, 156, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_reconstruct", 1, 3, 3, 1); __PYX_ERR(0, 160, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_length)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_reconstruct", 1, 3, 3, 2); __PYX_ERR(0, 156, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_reconstruct", 1, 3, 3, 2); __PYX_ERR(0, 160, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_reconstruct") < 0)) __PYX_ERR(0, 156, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_reconstruct") < 0)) __PYX_ERR(0, 160, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -5023,7 +5099,7 @@ static PyObject *__pyx_pw_8cyprimes_3_reconstruct(PyObject *__pyx_self, PyObject
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_reconstruct", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 156, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_reconstruct", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 160, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyprimes._reconstruct", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5045,7 +5121,7 @@ static PyObject *__pyx_pf_8cyprimes_2_reconstruct(CYTHON_UNUSED PyObject *__pyx_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_reconstruct", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8cyprimes__reconstruct(__pyx_v_data, __pyx_v_limit, __pyx_v_length, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8cyprimes__reconstruct(__pyx_v_data, __pyx_v_limit, __pyx_v_length, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5936,10 +6012,11 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_kp_s_0_3_0, __pyx_k_0_3_0, sizeof(__pyx_k_0_3_0), 0, 0, 1, 0},
+  {&__pyx_kp_s_0_4_0, __pyx_k_0_4_0, sizeof(__pyx_k_0_4_0), 0, 0, 1, 0},
   {&__pyx_n_s_IndexError, __pyx_k_IndexError, sizeof(__pyx_k_IndexError), 0, 0, 1, 1},
   {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_n_s_Primes, __pyx_k_Primes, sizeof(__pyx_k_Primes), 0, 0, 1, 1},
+  {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
   {&__pyx_n_s_args, __pyx_k_args, sizeof(__pyx_k_args), 0, 0, 1, 1},
   {&__pyx_n_s_check_range, __pyx_k_check_range, sizeof(__pyx_k_check_range), 0, 0, 1, 1},
@@ -5957,11 +6034,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_length, __pyx_k_length, sizeof(__pyx_k_length), 0, 0, 1, 1},
   {&__pyx_n_s_limit, __pyx_k_limit, sizeof(__pyx_k_limit), 0, 0, 1, 1},
   {&__pyx_kp_s_limit_must_be_0_got_d, __pyx_k_limit_must_be_0_got_d, sizeof(__pyx_k_limit_must_be_0_got_d), 0, 0, 1, 0},
+  {&__pyx_kp_s_limit_must_be_integer, __pyx_k_limit_must_be_integer, sizeof(__pyx_k_limit_must_be_integer), 0, 0, 1, 0},
   {&__pyx_kp_s_list_index_out_of_range, __pyx_k_list_index_out_of_range, sizeof(__pyx_k_list_index_out_of_range), 0, 0, 1, 0},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_max_ulong, __pyx_k_max_ulong, sizeof(__pyx_k_max_ulong), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_kp_s_not_prime, __pyx_k_not_prime, sizeof(__pyx_k_not_prime), 0, 0, 1, 0},
+  {&__pyx_kp_s_number_must_be_integer, __pyx_k_number_must_be_integer, sizeof(__pyx_k_number_must_be_integer), 0, 0, 1, 0},
   {&__pyx_kp_s_out_of_range_0_d, __pyx_k_out_of_range_0_d, sizeof(__pyx_k_out_of_range_0_d), 0, 0, 1, 0},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
@@ -5976,10 +6055,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 14, __pyx_L1_error)
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 56, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 60, __pyx_L1_error)
-  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 123, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -5989,51 +6069,73 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "cyprimes.pyx":94
+  /* "cyprimes.pyx":14
+ * cpdef bint is_prime(number) except -1:
+ *     if not isinstance(number, int):
+ *         raise TypeError('number must be integer')             # <<<<<<<<<<<<<<
+ *     if number < 0 or number > max_ulong:
+ *         raise ValueError('out of range 0..%d' % max_ulong)
+ */
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_number_must_be_integer); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple_);
+  __Pyx_GIVEREF(__pyx_tuple_);
+
+  /* "cyprimes.pyx":49
+ *     def __cinit__(self, limit):
+ *         if not isinstance(limit, int):
+ *             raise TypeError('limit must be integer')             # <<<<<<<<<<<<<<
+ *         if limit <= 0:
+ *             raise ValueError('limit must be > 0 (got %d)' % limit)
+ */
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_limit_must_be_integer); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__2);
+  __Pyx_GIVEREF(__pyx_tuple__2);
+
+  /* "cyprimes.pyx":98
  * 
  *     def __iter__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
  *             if self.limit >= 2:
  *                 yield 2
  */
-  __pyx_tuple_ = PyTuple_Pack(2, __pyx_n_s_genexpr, __pyx_n_s_genexpr); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 94, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple_);
-  __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_cyprimes_pyx, __pyx_n_s_iterator, 94, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_n_s_genexpr, __pyx_n_s_genexpr); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__3);
+  __Pyx_GIVEREF(__pyx_tuple__3);
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_cyprimes_pyx, __pyx_n_s_iterator, 98, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 98, __pyx_L1_error)
 
-  /* "cyprimes.pyx":102
+  /* "cyprimes.pyx":106
  * 
  *     def __reversed__(self):
  *         def iterator():             # <<<<<<<<<<<<<<
  *             if self.limit >= 2:
- *                 yield from (i * 2 + 3 for i in range(self.ar_len, -1, -1)
+ *                 yield from (i * 2 + 3 for i in range(self.ar_len - 1, -1, -1)
  */
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_n_s_genexpr, __pyx_n_s_genexpr); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 102, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_cyprimes_pyx, __pyx_n_s_iterator, 102, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_n_s_genexpr, __pyx_n_s_genexpr); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
+  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_cyprimes_pyx, __pyx_n_s_iterator, 106, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 106, __pyx_L1_error)
 
-  /* "cyprimes.pyx":119
+  /* "cyprimes.pyx":123
  *             idx = length + idx
  *         if idx < 0 or idx >= length:
  *             raise IndexError('list index out of range')             # <<<<<<<<<<<<<<
  *         if idx == 0:
  *             return 2
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_list_index_out_of_range); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 119, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__5);
-  __Pyx_GIVEREF(__pyx_tuple__5);
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_list_index_out_of_range); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__7);
+  __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "cyprimes.pyx":139
+  /* "cyprimes.pyx":143
  *         cdef long idx = <long> (num - 3) // 2
  *         if num < 2 or num % 2 == 0 or self.get_bit(idx) == 1:
  *             raise ValueError('not prime')             # <<<<<<<<<<<<<<
  *         cdef long c = 1, i
  *         for i in range(idx):
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_not_prime); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 139, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__6);
-  __Pyx_GIVEREF(__pyx_tuple__6);
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_not_prime); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__8);
+  __Pyx_GIVEREF(__pyx_tuple__8);
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6096,17 +6198,17 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_8cyprimes_Primes.get_bit = (int (*)(struct __pyx_obj_8cyprimes_Primes *, long))__pyx_f_8cyprimes_6Primes_get_bit;
   __pyx_vtable_8cyprimes_Primes.get_data = (PyObject *(*)(struct __pyx_obj_8cyprimes_Primes *))__pyx_f_8cyprimes_6Primes_get_data;
   __pyx_vtable_8cyprimes_Primes.set_data = (void (*)(struct __pyx_obj_8cyprimes_Primes *, PyObject *, long))__pyx_f_8cyprimes_6Primes_set_data;
-  if (PyType_Ready(&__pyx_type_8cyprimes_Primes) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_8cyprimes_Primes) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_8cyprimes_Primes.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_8cyprimes_Primes.tp_dictoffset && __pyx_type_8cyprimes_Primes.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_8cyprimes_Primes.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_8cyprimes_Primes.tp_dict, __pyx_vtabptr_8cyprimes_Primes) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Primes, (PyObject *)&__pyx_type_8cyprimes_Primes) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_8cyprimes_Primes.tp_dict, __pyx_vtabptr_8cyprimes_Primes) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Primes, (PyObject *)&__pyx_type_8cyprimes_Primes) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
   __pyx_ptype_8cyprimes_Primes = &__pyx_type_8cyprimes_Primes;
-  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct____iter__) < 0) __PYX_ERR(0, 93, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct____iter__) < 0) __PYX_ERR(0, 97, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_8cyprimes___pyx_scope_struct____iter__.tp_print = 0;
   #endif
@@ -6114,7 +6216,7 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_type_8cyprimes___pyx_scope_struct____iter__.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_8cyprimes___pyx_scope_struct____iter__ = &__pyx_type_8cyprimes___pyx_scope_struct____iter__;
-  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct_1_iterator) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct_1_iterator) < 0) __PYX_ERR(0, 98, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_8cyprimes___pyx_scope_struct_1_iterator.tp_print = 0;
   #endif
@@ -6122,7 +6224,7 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_type_8cyprimes___pyx_scope_struct_1_iterator.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_8cyprimes___pyx_scope_struct_1_iterator = &__pyx_type_8cyprimes___pyx_scope_struct_1_iterator;
-  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct_2_genexpr) < 0) __PYX_ERR(0, 97, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct_2_genexpr) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_8cyprimes___pyx_scope_struct_2_genexpr.tp_print = 0;
   #endif
@@ -6130,7 +6232,7 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_type_8cyprimes___pyx_scope_struct_2_genexpr.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_8cyprimes___pyx_scope_struct_2_genexpr = &__pyx_type_8cyprimes___pyx_scope_struct_2_genexpr;
-  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct_3___reversed__) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct_3___reversed__) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_8cyprimes___pyx_scope_struct_3___reversed__.tp_print = 0;
   #endif
@@ -6138,7 +6240,7 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_type_8cyprimes___pyx_scope_struct_3___reversed__.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_8cyprimes___pyx_scope_struct_3___reversed__ = &__pyx_type_8cyprimes___pyx_scope_struct_3___reversed__;
-  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct_4_iterator) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct_4_iterator) < 0) __PYX_ERR(0, 106, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_8cyprimes___pyx_scope_struct_4_iterator.tp_print = 0;
   #endif
@@ -6146,7 +6248,7 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_type_8cyprimes___pyx_scope_struct_4_iterator.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_8cyprimes___pyx_scope_struct_4_iterator = &__pyx_type_8cyprimes___pyx_scope_struct_4_iterator;
-  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct_5_genexpr) < 0) __PYX_ERR(0, 104, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_8cyprimes___pyx_scope_struct_5_genexpr) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_8cyprimes___pyx_scope_struct_5_genexpr.tp_print = 0;
   #endif
@@ -6390,15 +6492,15 @@ if (!__Pyx_RefNanny) {
   /* "cyprimes.pyx":7
  * from libc.string cimport memcpy
  * 
- * __version__ = '0.3.0'             # <<<<<<<<<<<<<<
+ * __version__ = '0.4.0'             # <<<<<<<<<<<<<<
  * max_ulong = ULONG_MAX
  * 
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version, __pyx_kp_s_0_3_0) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version, __pyx_kp_s_0_4_0) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
 
   /* "cyprimes.pyx":8
  * 
- * __version__ = '0.3.0'
+ * __version__ = '0.4.0'
  * max_ulong = ULONG_MAX             # <<<<<<<<<<<<<<
  * 
  * 
@@ -6408,7 +6510,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_max_ulong, __pyx_t_1) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cyprimes.pyx":35
+  /* "cyprimes.pyx":37
  * 
  * 
  * cdef long bits = sizeof(int) * 8             # <<<<<<<<<<<<<<
@@ -6496,6 +6598,209 @@ static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
     }
     return result;
 }
+
+/* PyObjectCall */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
+    PyObject *result;
+    ternaryfunc call = func->ob_type->tp_call;
+    if (unlikely(!call))
+        return PyObject_Call(func, arg, kw);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = (*call)(func, arg, kw);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+/* PyErrFetchRestore */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    tmp_type = tstate->curexc_type;
+    tmp_value = tstate->curexc_value;
+    tmp_tb = tstate->curexc_traceback;
+    tstate->curexc_type = type;
+    tstate->curexc_value = value;
+    tstate->curexc_traceback = tb;
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+}
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    *type = tstate->curexc_type;
+    *value = tstate->curexc_value;
+    *tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+}
+#endif
+
+/* RaiseException */
+#if PY_MAJOR_VERSION < 3
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb,
+                        CYTHON_UNUSED PyObject *cause) {
+    __Pyx_PyThreadState_declare
+    Py_XINCREF(type);
+    if (!value || value == Py_None)
+        value = NULL;
+    else
+        Py_INCREF(value);
+    if (!tb || tb == Py_None)
+        tb = NULL;
+    else {
+        Py_INCREF(tb);
+        if (!PyTraceBack_Check(tb)) {
+            PyErr_SetString(PyExc_TypeError,
+                "raise: arg 3 must be a traceback or None");
+            goto raise_error;
+        }
+    }
+    if (PyType_Check(type)) {
+#if CYTHON_COMPILING_IN_PYPY
+        if (!value) {
+            Py_INCREF(Py_None);
+            value = Py_None;
+        }
+#endif
+        PyErr_NormalizeException(&type, &value, &tb);
+    } else {
+        if (value) {
+            PyErr_SetString(PyExc_TypeError,
+                "instance exception may not have a separate value");
+            goto raise_error;
+        }
+        value = type;
+        type = (PyObject*) Py_TYPE(type);
+        Py_INCREF(type);
+        if (!PyType_IsSubtype((PyTypeObject *)type, (PyTypeObject *)PyExc_BaseException)) {
+            PyErr_SetString(PyExc_TypeError,
+                "raise: exception class must be a subclass of BaseException");
+            goto raise_error;
+        }
+    }
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrRestore(type, value, tb);
+    return;
+raise_error:
+    Py_XDECREF(value);
+    Py_XDECREF(type);
+    Py_XDECREF(tb);
+    return;
+}
+#else
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause) {
+    PyObject* owned_instance = NULL;
+    if (tb == Py_None) {
+        tb = 0;
+    } else if (tb && !PyTraceBack_Check(tb)) {
+        PyErr_SetString(PyExc_TypeError,
+            "raise: arg 3 must be a traceback or None");
+        goto bad;
+    }
+    if (value == Py_None)
+        value = 0;
+    if (PyExceptionInstance_Check(type)) {
+        if (value) {
+            PyErr_SetString(PyExc_TypeError,
+                "instance exception may not have a separate value");
+            goto bad;
+        }
+        value = type;
+        type = (PyObject*) Py_TYPE(value);
+    } else if (PyExceptionClass_Check(type)) {
+        PyObject *instance_class = NULL;
+        if (value && PyExceptionInstance_Check(value)) {
+            instance_class = (PyObject*) Py_TYPE(value);
+            if (instance_class != type) {
+                int is_subclass = PyObject_IsSubclass(instance_class, type);
+                if (!is_subclass) {
+                    instance_class = NULL;
+                } else if (unlikely(is_subclass == -1)) {
+                    goto bad;
+                } else {
+                    type = instance_class;
+                }
+            }
+        }
+        if (!instance_class) {
+            PyObject *args;
+            if (!value)
+                args = PyTuple_New(0);
+            else if (PyTuple_Check(value)) {
+                Py_INCREF(value);
+                args = value;
+            } else
+                args = PyTuple_Pack(1, value);
+            if (!args)
+                goto bad;
+            owned_instance = PyObject_Call(type, args, NULL);
+            Py_DECREF(args);
+            if (!owned_instance)
+                goto bad;
+            value = owned_instance;
+            if (!PyExceptionInstance_Check(value)) {
+                PyErr_Format(PyExc_TypeError,
+                             "calling %R should have returned an instance of "
+                             "BaseException, not %R",
+                             type, Py_TYPE(value));
+                goto bad;
+            }
+        }
+    } else {
+        PyErr_SetString(PyExc_TypeError,
+            "raise: exception class must be a subclass of BaseException");
+        goto bad;
+    }
+    if (cause) {
+        PyObject *fixed_cause;
+        if (cause == Py_None) {
+            fixed_cause = NULL;
+        } else if (PyExceptionClass_Check(cause)) {
+            fixed_cause = PyObject_CallObject(cause, NULL);
+            if (fixed_cause == NULL)
+                goto bad;
+        } else if (PyExceptionInstance_Check(cause)) {
+            fixed_cause = cause;
+            Py_INCREF(fixed_cause);
+        } else {
+            PyErr_SetString(PyExc_TypeError,
+                            "exception causes must derive from "
+                            "BaseException");
+            goto bad;
+        }
+        PyException_SetCause(value, fixed_cause);
+    }
+    PyErr_SetObject(type, value);
+    if (tb) {
+#if CYTHON_COMPILING_IN_PYPY
+        PyObject *tmp_type, *tmp_value, *tmp_tb;
+        PyErr_Fetch(&tmp_type, &tmp_value, &tmp_tb);
+        Py_INCREF(tb);
+        PyErr_Restore(tmp_type, tmp_value, tb);
+        Py_XDECREF(tmp_tb);
+#else
+        PyThreadState *tstate = __Pyx_PyThreadState_Current;
+        PyObject* tmp_tb = tstate->curexc_traceback;
+        if (tb != tmp_tb) {
+            Py_INCREF(tb);
+            tstate->curexc_traceback = tb;
+            Py_XDECREF(tmp_tb);
+        }
+#endif
+    }
+bad:
+    Py_XDECREF(owned_instance);
+    return;
+}
+#endif
 
 /* PyDictVersioning */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
@@ -6700,26 +7005,6 @@ done:
 #endif
 #endif
 
-/* PyObjectCall */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
-    PyObject *result;
-    ternaryfunc call = func->ob_type->tp_call;
-    if (unlikely(!call))
-        return PyObject_Call(func, arg, kw);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = (*call)(func, arg, kw);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
-    }
-    return result;
-}
-#endif
-
 /* PyObjectCallMethO */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
@@ -6777,189 +7062,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
     result = __Pyx_PyObject_Call(func, args, NULL);
     Py_DECREF(args);
     return result;
-}
-#endif
-
-/* PyErrFetchRestore */
-#if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->curexc_type;
-    tmp_value = tstate->curexc_value;
-    tmp_tb = tstate->curexc_traceback;
-    tstate->curexc_type = type;
-    tstate->curexc_value = value;
-    tstate->curexc_traceback = tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-}
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    *type = tstate->curexc_type;
-    *value = tstate->curexc_value;
-    *tb = tstate->curexc_traceback;
-    tstate->curexc_type = 0;
-    tstate->curexc_value = 0;
-    tstate->curexc_traceback = 0;
-}
-#endif
-
-/* RaiseException */
-#if PY_MAJOR_VERSION < 3
-static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb,
-                        CYTHON_UNUSED PyObject *cause) {
-    __Pyx_PyThreadState_declare
-    Py_XINCREF(type);
-    if (!value || value == Py_None)
-        value = NULL;
-    else
-        Py_INCREF(value);
-    if (!tb || tb == Py_None)
-        tb = NULL;
-    else {
-        Py_INCREF(tb);
-        if (!PyTraceBack_Check(tb)) {
-            PyErr_SetString(PyExc_TypeError,
-                "raise: arg 3 must be a traceback or None");
-            goto raise_error;
-        }
-    }
-    if (PyType_Check(type)) {
-#if CYTHON_COMPILING_IN_PYPY
-        if (!value) {
-            Py_INCREF(Py_None);
-            value = Py_None;
-        }
-#endif
-        PyErr_NormalizeException(&type, &value, &tb);
-    } else {
-        if (value) {
-            PyErr_SetString(PyExc_TypeError,
-                "instance exception may not have a separate value");
-            goto raise_error;
-        }
-        value = type;
-        type = (PyObject*) Py_TYPE(type);
-        Py_INCREF(type);
-        if (!PyType_IsSubtype((PyTypeObject *)type, (PyTypeObject *)PyExc_BaseException)) {
-            PyErr_SetString(PyExc_TypeError,
-                "raise: exception class must be a subclass of BaseException");
-            goto raise_error;
-        }
-    }
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrRestore(type, value, tb);
-    return;
-raise_error:
-    Py_XDECREF(value);
-    Py_XDECREF(type);
-    Py_XDECREF(tb);
-    return;
-}
-#else
-static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause) {
-    PyObject* owned_instance = NULL;
-    if (tb == Py_None) {
-        tb = 0;
-    } else if (tb && !PyTraceBack_Check(tb)) {
-        PyErr_SetString(PyExc_TypeError,
-            "raise: arg 3 must be a traceback or None");
-        goto bad;
-    }
-    if (value == Py_None)
-        value = 0;
-    if (PyExceptionInstance_Check(type)) {
-        if (value) {
-            PyErr_SetString(PyExc_TypeError,
-                "instance exception may not have a separate value");
-            goto bad;
-        }
-        value = type;
-        type = (PyObject*) Py_TYPE(value);
-    } else if (PyExceptionClass_Check(type)) {
-        PyObject *instance_class = NULL;
-        if (value && PyExceptionInstance_Check(value)) {
-            instance_class = (PyObject*) Py_TYPE(value);
-            if (instance_class != type) {
-                int is_subclass = PyObject_IsSubclass(instance_class, type);
-                if (!is_subclass) {
-                    instance_class = NULL;
-                } else if (unlikely(is_subclass == -1)) {
-                    goto bad;
-                } else {
-                    type = instance_class;
-                }
-            }
-        }
-        if (!instance_class) {
-            PyObject *args;
-            if (!value)
-                args = PyTuple_New(0);
-            else if (PyTuple_Check(value)) {
-                Py_INCREF(value);
-                args = value;
-            } else
-                args = PyTuple_Pack(1, value);
-            if (!args)
-                goto bad;
-            owned_instance = PyObject_Call(type, args, NULL);
-            Py_DECREF(args);
-            if (!owned_instance)
-                goto bad;
-            value = owned_instance;
-            if (!PyExceptionInstance_Check(value)) {
-                PyErr_Format(PyExc_TypeError,
-                             "calling %R should have returned an instance of "
-                             "BaseException, not %R",
-                             type, Py_TYPE(value));
-                goto bad;
-            }
-        }
-    } else {
-        PyErr_SetString(PyExc_TypeError,
-            "raise: exception class must be a subclass of BaseException");
-        goto bad;
-    }
-    if (cause) {
-        PyObject *fixed_cause;
-        if (cause == Py_None) {
-            fixed_cause = NULL;
-        } else if (PyExceptionClass_Check(cause)) {
-            fixed_cause = PyObject_CallObject(cause, NULL);
-            if (fixed_cause == NULL)
-                goto bad;
-        } else if (PyExceptionInstance_Check(cause)) {
-            fixed_cause = cause;
-            Py_INCREF(fixed_cause);
-        } else {
-            PyErr_SetString(PyExc_TypeError,
-                            "exception causes must derive from "
-                            "BaseException");
-            goto bad;
-        }
-        PyException_SetCause(value, fixed_cause);
-    }
-    PyErr_SetObject(type, value);
-    if (tb) {
-#if CYTHON_COMPILING_IN_PYPY
-        PyObject *tmp_type, *tmp_value, *tmp_tb;
-        PyErr_Fetch(&tmp_type, &tmp_value, &tmp_tb);
-        Py_INCREF(tb);
-        PyErr_Restore(tmp_type, tmp_value, tb);
-        Py_XDECREF(tmp_tb);
-#else
-        PyThreadState *tstate = __Pyx_PyThreadState_Current;
-        PyObject* tmp_tb = tstate->curexc_traceback;
-        if (tb != tmp_tb) {
-            Py_INCREF(tb);
-            tstate->curexc_traceback = tb;
-            Py_XDECREF(tmp_tb);
-        }
-#endif
-    }
-bad:
-    Py_XDECREF(owned_instance);
-    return;
 }
 #endif
 
