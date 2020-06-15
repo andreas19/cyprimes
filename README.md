@@ -87,3 +87,4 @@ Although this class uses a bitarray for the sieve be carefull not run out of mem
 2020-06-15 (0.5.0)
 
 * Add methods next(), previous(), and between() to class Primes
+* Add tests
