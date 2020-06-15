@@ -8,12 +8,20 @@ __version__ = '0.4.3'
 max_ulong = ULONG_MAX
 
 
+cpdef _check_int(num, name='number'):
+    if not isinstance(num, int):
+        raise TypeError(f'{name} must be integer')
+
+
+cpdef _check_range(num, limit):
+    if num < 0 or num > limit:
+        raise ValueError(f'out of range 0..{limit}')
+
+
 @cython.cdivision(True)
 cpdef bint is_prime(number) except -1:
-    if not isinstance(number, int):
-        raise TypeError('number must be integer')
-    if number < 0 or number > max_ulong:
-        raise ValueError('out of range 0..%d' % max_ulong)
+    _check_int(number)
+    _check_range(number, max_ulong)
     cdef unsigned long n = <unsigned  long> number
     if n <= 1:
         return 0
@@ -34,28 +42,24 @@ cpdef bint is_prime(number) except -1:
     return 1
 
 
-cdef long bits = sizeof(int) * 8
-
-
 cdef class Primes:
-    cdef int *data
+    cdef char *data
     cdef readonly long limit
     cdef long len
     cdef long ar_len
     cdef size_t ar_size
 
     def __cinit__(self, limit):
-        if not isinstance(limit, int):
-            raise TypeError('limit must be integer')
+        _check_int(limit, 'limit')
         if limit <= 0:
             raise ValueError('limit must be > 0 (got %d)' % limit)
         cdef long n = <long> limit
         self.limit = n
         self.ar_len = (n - 3) // 2 + 1
         self.len = self.ar_len + 1 if n > 1 else 0
-        cdef ldiv_t r = ldiv(self.ar_len, bits)
-        self.ar_size = r.quot + (1 if r.rem else 0)
-        self.data = <int*> calloc(self.ar_size, sizeof(int))
+        cdef ldiv_t r = ldiv(self.ar_len, 8)
+        self.ar_size = (r.quot + (1 if r.rem else 0))
+        self.data = <char*> calloc(self.ar_size, 1)
         if not self.data:
             raise MemoryError()
 
@@ -74,20 +78,20 @@ cdef class Primes:
         free(self.data)
 
     cdef void set_bit(self, long idx):
-        cdef ldiv_t r = ldiv(idx, bits)
+        cdef ldiv_t r = ldiv(idx, 8)
         if not self.data[r.quot] & (1 << r.rem):
             self.len -= 1
             self.data[r.quot] |= 1 << r.rem
 
     cdef int get_bit(self, long idx):
-        cdef ldiv_t r = ldiv(idx, bits)
+        cdef ldiv_t r = ldiv(idx, 8)
         return 1 if self.data[r.quot] & (1 << r.rem) else 0
 
     def __len__(self):
         return self.len
 
     def __contains__(self, num):
-        self._check_range(num)
+        _check_range(num, self.limit)
         if num == 2:
             return True
         if num < 2 or num % 2 == 0:
@@ -130,16 +134,13 @@ cdef class Primes:
                 if c == i:
                     return k * 2 + 3
 
-    def _check_range(self, num):
-        if num < 0 or num > self.limit:
-            raise ValueError('out of range 0..%d' % self.limit)
-
-    def index(self, num):
-        self._check_range(num)
-        if num == 2:
+    def index(self, number):
+        _check_int(number)
+        _check_range(number, self.limit)
+        if number == 2:
             return 0
-        cdef long idx = <long> (num - 3) // 2
-        if num < 2 or num % 2 == 0 or self.get_bit(idx) == 1:
+        cdef long idx = <long> (number - 3) // 2
+        if number < 2 or number % 2 == 0 or self.get_bit(idx) == 1:
             raise ValueError('not prime')
         cdef long c = 1, i
         for i in range(idx):
@@ -147,15 +148,47 @@ cdef class Primes:
                 c += 1
         return c
 
+    def next(self, number):
+        _check_int(number)
+        _check_range(number, self.limit)
+        if number < 2:
+            return 2
+        for n in range(number + 2 if number % 2 else number + 1, self.limit + 1, 2):
+            if n in self:
+                return n
+
+    def previous(self, number):
+        _check_int(number)
+        _check_range(number, self.limit)
+        if number == 3:
+            return 2
+        for n in range(number - 2 if number % 2 else number - 1, 0, -2):
+            if n in self:
+                return n
+
+    def between(self, start, end):
+        _check_int(start, 'start')
+        _check_int(end, 'end')
+        _check_range(start, self.limit)
+        _check_range(end, self.limit)
+        if end < start:
+            raise ValueError('end must be > start')
+        r = []
+        for n in range(start, end + 1):
+            if n in self:
+                r.append(n)
+        return tuple(r)
+
     cdef bytes get_data(self):
-        return <bytes> (<char*> self.data)[:self.ar_size * sizeof(int)]
+        return <bytes> (<char*> self.data)[:self.ar_size]
 
     cdef void set_data(self, bytes data, long length):
-        memcpy(self.data, <char*> data, self.ar_size * sizeof(int))
+        memcpy(self.data, <char*> data, self.ar_size)
         self.len = length
 
     def __reduce__(self):
         return _reconstruct, (self.get_data(), self.limit, self.len)
+
 
 cpdef object _reconstruct(data, limit, length):
     obj = Primes.__new__(Primes, limit)

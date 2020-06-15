@@ -16,18 +16,35 @@ To install *CyPrimes* a C-compiler ([GCC](https://en.wikipedia.org/wiki/GNU_Comp
 
 ## Usage
 
-### Function is_prime(number)
+### Function `is_prime(number)`
 
 This function returns `True` if the `number` is prime. Because it uses the C-type *unsigned long*
 for `number` it raises a `ValueError` if `number < 0` or `number > cyprimes.max_ulong`. It raises
 a `TypeError` if `number` is not an integer.
 
 
-### Class Primes(limit)
+### Class `Primes(limit)`
 
-This class uses the *Sieve of Eratosthenes* to find all prime numbers up to `limit`. An instance of
-this class supports the *len* function, the *in* operator, subscription (with integer indexes and slices),
-has an *index* method, is iterable, and can be pickled. It raises a `TypeError` if `limit` is not an integer.
+This class uses the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
+to find all prime numbers up to `limit`.
+
+An instance of this class supports the *len* function, the *in* operator, subscription
+(with integer indexes and slices), is iterable, and can be pickled. It raises a `TypeError`
+if `limit` is not an integer.
+
+**Methods:** All methods raise `TypeError`s if their parameters are not integers and `ValueError`s
+             if they are out of range.
+
+* `index(number)`: Returns the index of `number`. Raises `ValueError` if `number` is not prime.
+
+* `next(number)`: Returns the next prime number after `number` or `None` if their is none in the
+                  given range.
+
+* `previous(number)`: Returns the previous prime number before `number` or `None` if their is none
+                      in the given range.
+
+* `between(start, end)`: Returns a `tuple` with all prime numbers in the closed interval [`start`, `end`].
+
 
 **Warning**
 
@@ -66,3 +83,7 @@ Although this class uses a bitarray for the sieve be carefull not run out of mem
 2020-06-03 (0.4.3)
 
 * Fix: README again :blush:
+
+2020-06-15 (0.5.0)
+
+* Add methods next(), previous(), and between() to class Primes
