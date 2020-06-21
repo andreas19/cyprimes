@@ -5,13 +5,13 @@ import pytest
 import cyprimes as p
 
 
-@pytest.fixture
-def primes_from_file(): 
+@pytest.fixture(scope='module')
+def primes_from_file():
     with open(pathlib.Path(__file__).parent / 'primes.txt') as fh:
         return tuple(int(s) for line in fh for s in line.split())
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def primes_100():
     return p.Primes(100)
 
@@ -67,8 +67,8 @@ def test_primes_index(primes_100):
         primes_100.index(-1)
     with pytest.raises(ValueError):
         primes_100.index(101)
-    
-    
+
+
 def test_primes_next(primes_100):
     assert primes_100.next(0) == 2
     assert primes_100.next(2) == 3
