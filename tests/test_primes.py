@@ -1,3 +1,4 @@
+import pathlib
 import pickle
 
 import pytest
@@ -6,7 +7,7 @@ import cyprimes as p
 
 @pytest.fixture
 def primes_from_file(): 
-    with open('files/primes.txt') as fh:
+    with open(pathlib.Path(__file__).parent / 'primes.txt') as fh:
         return tuple(int(s) for line in fh for s in line.split())
 
 

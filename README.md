@@ -67,24 +67,24 @@ Although this class uses a bitarray for the sieve be carefull not run out of mem
 
 ## History
 
-2020-06-02 (0.4.0)
+2020-06-15 (0.5.0)
 
-* First public release
+* Add methods next(), previous(), and between() to class Primes
+* Add tests
+
+2020-06-03 (0.4.3)
+
+* Fix: README again :blush:
+
+2020-06-03 (0.4.2)
+
+* Fix: README
 
 2020-06-03 (0.4.1)
 
 * Fix: Primes() and is_prime() now raise TypeErrors if the parameter is not an integer
 * Fix: Primes.\_\_reversed\_\_() now works correct
 
-2020-06-03 (0.4.2)
+2020-06-02 (0.4.0)
 
-* Fix: README
-
-2020-06-03 (0.4.3)
-
-* Fix: README again :blush:
-
-2020-06-15 (0.5.0)
-
-* Add methods next(), previous(), and between() to class Primes
-* Add tests
+* First public release
