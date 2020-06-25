@@ -68,7 +68,7 @@ Although this class uses a bitarray for the sieve be carefull not run out of mem
 
 ## History
 
-2020-07-25 (0.6.0)
+2020-06-25 (0.6.0)
 
 * Add methods \_\_eq\_\_(), \_\_hash\_\_(), \_\_sizeof\_\_() ,and \_\_repr\_\_() to class Primes
 
