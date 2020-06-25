@@ -28,9 +28,10 @@ a `TypeError` if `number` is not an integer.
 This class uses the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
 to find all prime numbers up to `limit`.
 
-An instance of this class supports the *len* function, the *in* operator, subscription
-(with integer indexes and slices), is iterable, and can be pickled. It raises a `TypeError`
-if `limit` is not an integer.
+An instance of this class supports the *len* and *sys.getsizeof* functions, the *in* and *==* operators,
+subscription (with integer indexes and slices), is iterable, and can be pickled. Two *Primes* objects are
+considered equal if they contain the same prime numbers.
+A `TypeError` will be raised if `limit` is not an integer.
 
 **Methods:** All methods raise `TypeError`s if their parameters are not integers and `ValueError`s
              if they are out of range.
@@ -66,6 +67,10 @@ Although this class uses a bitarray for the sieve be carefull not run out of mem
 
 
 ## History
+
+2020-07-25 (0.6.0)
+
+* Add methods \_\_eq\_\_(), \_\_hash\_\_(), \_\_sizeof\_\_() ,and \_\_repr\_\_() to class Primes
 
 2020-06-15 (0.5.0)
 

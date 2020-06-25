@@ -1,5 +1,6 @@
 import pathlib
 import pickle
+import sys
 
 import pytest
 import cyprimes as p
@@ -56,6 +57,11 @@ def test_primes(primes_from_file):
     assert list(reversed(primes)) == list(reversed(primes_from_file))
     with pytest.raises(TypeError):
         p.Primes(2.3)
+    primes2 = p.Primes(7920)
+    assert primes == primes2
+    assert hash(primes) == hash(primes2)
+    assert sys.getsizeof(primes) == sys.getsizeof(primes2)
+    assert repr(primes) == 'Primes(limit=7919)'
 
 
 def test_primes_index(primes_100):

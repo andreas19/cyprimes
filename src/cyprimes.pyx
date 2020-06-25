@@ -58,7 +58,7 @@ cdef class Primes:
         self.ar_len = (n - 3) // 2 + 1
         self.len = self.ar_len + 1 if n > 1 else 0
         cdef ldiv_t r = ldiv(self.ar_len, 8)
-        self.ar_size = (r.quot + (1 if r.rem else 0))
+        self.ar_size = r.quot + (1 if r.rem else 0)
         self.data = <char*> calloc(self.ar_size, 1)
         if not self.data:
             raise MemoryError()
@@ -133,6 +133,18 @@ cdef class Primes:
                 c += 1
                 if c == i:
                     return k * 2 + 3
+
+    def __eq__(self, other):
+        return self.len == len(other)
+
+    def __hash__(self):
+        return hash(self.len)
+
+    def __sizeof__(self):
+        return sizeof(char*) + 3 * sizeof(long) + sizeof(size_t) + self.ar_size
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(limit={self.limit})'
 
     def index(self, number):
         _check_int(number)
