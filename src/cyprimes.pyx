@@ -42,6 +42,64 @@ cpdef bint is_prime(number) except -1:
     return 1
 
 
+cpdef unsigned long next_prime(number) except -1:
+    _check_int(number)
+    cdef unsigned long n = <unsigned  long> number
+    if n == 0 or n == 1:
+        return 2
+    if n % 2 == 0:
+        n = n + 1
+    else:
+        n = n + 2
+    for x in range(n, max_ulong, 2):
+        if is_prime(x):
+            return x
+
+
+cpdef unsigned long previous_prime(number) except -1:
+    _check_int(number)
+    cdef unsigned long n = <unsigned  long> number
+    if n <= 2:
+        raise ValueError(f'no previous prime for {number}')
+    if n == 3:
+        return 2
+    if n % 2 == 0:
+        n = n - 1
+    else:
+        n = n - 2
+    for x in range(n, 1, -2):
+        if is_prime(x):
+            return x
+
+
+cpdef tuple primes_between(start, end):
+    _check_int(start, 'start')
+    _check_int(end, 'end')
+    if end < start:
+        raise ValueError('end must be > start')
+    if not is_prime(start):
+        start = next_prime(start)
+    if not is_prime(end):
+        end = previous_prime(end)
+    if start > end:
+        return ()
+    if start == end:
+        return (start,)
+    if start == 2:
+        if end == 3:
+            return (2, 3)
+        r = [2]
+        start = 3
+    else:
+        r = [start]
+        start = start + 2
+    for x in range(start, end, 2):
+        if is_prime(x):
+            r.append(x)
+    r.append(end)
+    return tuple(r)
+
+
 cdef class Primes:
     cdef char *data
     cdef readonly long limit
@@ -52,7 +110,7 @@ cdef class Primes:
     def __cinit__(self, limit):
         _check_int(limit, 'limit')
         if limit <= 0:
-            raise ValueError('limit must be > 0 (got %d)' % limit)
+            raise ValueError(f'limit must be > 0 (got {limit})')
         cdef long n = <long> limit
         self.limit = n
         self.ar_len = (n - 3) // 2 + 1

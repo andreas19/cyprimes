@@ -77,6 +77,7 @@ def test_primes_index(primes_100):
 
 def test_primes_next(primes_100):
     assert primes_100.next(0) == 2
+    assert primes_100.next(1) == 2
     assert primes_100.next(2) == 3
     assert primes_100.next(90) == 97
     assert primes_100.next(97) is None
@@ -125,3 +126,32 @@ def test_pickle():
     primes = p.Primes(1000)
     pickled = pickle.dumps(primes)
     assert list(primes) == list(pickle.loads(pickled))
+
+
+def test_funcs(primes_100):
+    with pytest.raises(TypeError):
+        p.next_prime(1.1)
+    with pytest.raises(TypeError):
+        p.previous_prime(1.1)
+    with pytest.raises(ValueError):
+        p.previous_prime(0)
+    with pytest.raises(ValueError):
+        p.previous_prime(2)
+    with pytest.raises(TypeError):
+        p.primes_between(1.1, 2)
+    with pytest.raises(TypeError):
+        p.primes_between(1, 2.1)
+    with pytest.raises(ValueError):
+        p.primes_between(2, 1)
+    assert primes_100.next(0) == p.next_prime(0)
+    assert primes_100.next(1) == p.next_prime(1)
+    assert primes_100.next(2) == p.next_prime(2)
+    assert primes_100.next(90) == p.next_prime(90)
+    assert primes_100.previous(3) == p.previous_prime(3)
+    assert primes_100.previous(97) == p.previous_prime(97)
+    assert primes_100.previous(100) == p.previous_prime(100)
+    assert primes_100.between(0, 10) == p.primes_between(0, 10)
+    assert primes_100.between(2, 7) == p.primes_between(2, 7)
+    assert primes_100.between(89, 100) == p.primes_between(89, 100)
+    assert primes_100.between(3, 3) == p.primes_between(3, 3)
+    assert primes_100.between(4, 4) == p.primes_between(4, 4)

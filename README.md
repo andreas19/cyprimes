@@ -18,9 +18,21 @@ To install *CyPrimes* a C-compiler ([GCC](https://en.wikipedia.org/wiki/GNU_Comp
 
 ### Function `is_prime(number)`
 
-This function returns `True` if the `number` is prime. Because it uses the C-type *unsigned long*
+Returns `True` if the `number` is prime. Because it uses the C-type *unsigned long*
 for `number` it raises a `ValueError` if `number < 0` or `number > cyprimes.max_ulong`. It raises
 a `TypeError` if `number` is not an integer.
+
+### Function `next_prime(number)`:
+
+Returns the next prime number after `number`.
+
+### Function `previous_prime(number)`
+
+Returns the previous prime number before `number`.
+
+### Function `primes_between(start, end)`
+
+Returns a `tuple` with all prime numbers in the closed interval [`start`, `end`].
 
 
 ### Class `Primes(limit)`
@@ -49,7 +61,7 @@ A `TypeError` will be raised if `limit` is not an integer.
 
 **Warning**
 
-Although this class uses a bitarray for the sieve be carefull not run out of memory:
+Although this class uses a bitarray for the sieve be carefull not to run out of memory:
 
 |       limit       |   size   |
 | ----------------: | -------: |
