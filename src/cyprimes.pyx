@@ -4,7 +4,7 @@ from libc.limits cimport ULONG_MAX
 from libc.stdlib cimport calloc, free, ldiv, ldiv_t
 from libc.string cimport memcpy
 
-__version__ = '0.7.1'
+__version__ = '0.7.2'
 max_ulong = ULONG_MAX
 cdef unsigned long _max_ulong = ULONG_MAX
 cdef unsigned long _max_prime = 18446744073709551557  # last prime before max_ulong
