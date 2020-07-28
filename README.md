@@ -80,6 +80,10 @@ Although this class uses a bitarray for the sieve be carefull not to run out of 
 
 ## History
 
+2020-07-28 (0.7.2)
+
+* Correct version in generated C code
+
 2020-07-28 (0.7.1)
 
 * Add checks to avoid overflow
