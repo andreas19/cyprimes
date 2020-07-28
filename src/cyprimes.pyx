@@ -6,23 +6,29 @@ from libc.string cimport memcpy
 
 __version__ = '0.7.0'
 max_ulong = ULONG_MAX
+cdef unsigned long _max_ulong = ULONG_MAX
+cdef unsigned long _max_prime = 18446744073709551557  # last prime before max_ulong
 
 
-cpdef _check_int(num, name='number'):
+cdef _check_int(num, name='number'):
     if not isinstance(num, int):
         raise TypeError(f'{name} must be integer')
 
 
-cpdef _check_range(num, limit):
+cdef _check_range(num, limit):
     if num < 0 or num > limit:
         raise ValueError(f'out of range 0..{limit}')
 
 
-@cython.cdivision(True)
 cpdef bint is_prime(number) except -1:
     _check_int(number)
     _check_range(number, max_ulong)
     cdef unsigned long n = <unsigned  long> number
+    return _is_prime(n)
+
+
+@cython.cdivision(True)
+cdef bint _is_prime(unsigned  long n) except -1:
     if n <= 1:
         return 0
     if n < 4:
@@ -44,20 +50,24 @@ cpdef bint is_prime(number) except -1:
 
 cpdef unsigned long next_prime(number) except -1:
     _check_int(number)
+    _check_range(number, max_ulong)
     cdef unsigned long n = <unsigned  long> number
+    if n >= _max_prime:
+        raise ValueError(f'no next prime in range {n}..{max_ulong}')
     if n == 0 or n == 1:
         return 2
     if n % 2 == 0:
         n = n + 1
     else:
         n = n + 2
-    for x in range(n, max_ulong, 2):
-        if is_prime(x):
+    for x in range(n, _max_ulong, 2):
+        if _is_prime(x):
             return x
 
 
 cpdef unsigned long previous_prime(number) except -1:
     _check_int(number)
+    _check_range(number, max_ulong)
     cdef unsigned long n = <unsigned  long> number
     if n <= 2:
         raise ValueError(f'no previous prime for {number}')
@@ -68,35 +78,39 @@ cpdef unsigned long previous_prime(number) except -1:
     else:
         n = n - 2
     for x in range(n, 1, -2):
-        if is_prime(x):
+        if _is_prime(x):
             return x
 
 
 cpdef tuple primes_between(start, end):
     _check_int(start, 'start')
     _check_int(end, 'end')
+    _check_range(start, max_ulong)
+    _check_range(end, max_ulong)
     if end < start:
         raise ValueError('end must be > start')
-    if not is_prime(start):
-        start = next_prime(start)
-    if not is_prime(end):
-        end = previous_prime(end)
-    if start > end:
+    cdef unsigned long n1 = <unsigned  long> start
+    cdef unsigned long n2 = <unsigned  long> end
+    if not _is_prime(n1):
+        n1 = next_prime(n1)
+    if not _is_prime(n2):
+        n2 = previous_prime(n2)
+    if n1 > n2:
         return ()
-    if start == end:
-        return (start,)
-    if start == 2:
-        if end == 3:
+    if n1 == n2:
+        return (n1,)
+    if n1 == 2:
+        if n2 == 3:
             return (2, 3)
         r = [2]
-        start = 3
+        n1 = 3
     else:
-        r = [start]
-        start = start + 2
-    for x in range(start, end, 2):
-        if is_prime(x):
+        r = [n1]
+        n1 = n1 + 2
+    for x in range(n1, n2, 2):
+        if _is_prime(x):
             r.append(x)
-    r.append(end)
+    r.append(n2)
     return tuple(r)
 
 
