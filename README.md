@@ -80,6 +80,10 @@ Although this class uses a bitarray for the sieve be carefull not to run out of 
 
 ## History
 
+2020-07-28 (0.7.1)
+
+* Add checks to avoid overflow
+
 2020-07-27 (0.7.0)
 
 * Add functions next_prime(), previous_prime(), and primes_between()
