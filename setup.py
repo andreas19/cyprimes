@@ -12,6 +12,7 @@ setup(
     description='Module for working with prime numbers.',
     long_description=long_description,
     long_description_content_type='text/markdown',
+    keywords=['prime numbers'],
     license='BSD-3-Clause',
     classifiers=[
         'Development Status :: 4 - Beta',

@@ -61,7 +61,7 @@ A `TypeError` will be raised if `limit` is not an integer.
 
 **Warning**
 
-Although this class uses a bitarray for the sieve be carefull not to run out of memory:
+Although this class uses a bitarray for the sieve, be carefull not to run out of memory:
 
 |       limit       |   size   |
 | ----------------: | -------: |
