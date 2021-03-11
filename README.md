@@ -59,7 +59,7 @@ A `TypeError` will be raised if `limit` is not an integer.
 * `between(start, end)`: Returns a `tuple` with all prime numbers in the closed interval [`start`, `end`].
 
 
-**Warning**
+## Warning
 
 Although this class uses a bitarray for the sieve, be carefull not to run out of memory:
 
