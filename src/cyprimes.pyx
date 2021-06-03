@@ -1,13 +1,13 @@
 cimport cython
 from libc.math cimport sqrt
-from libc.limits cimport ULONG_MAX
+from libc.limits cimport ULLONG_MAX
 from libc.stdlib cimport calloc, free, ldiv, ldiv_t
 from libc.string cimport memcpy
 
 __version__ = '0.7.3'
-max_ulong = ULONG_MAX
-cdef unsigned long _max_ulong = ULONG_MAX
-cdef unsigned long _max_prime = 18446744073709551557  # last prime before max_ulong
+max_ulong = ULLONG_MAX
+cdef unsigned long long _max_ulong = ULLONG_MAX
+cdef unsigned long long _max_prime = 18446744073709551557  # last prime before max_ulong
 
 
 cdef _check_int(num, name='number'):

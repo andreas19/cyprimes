@@ -10,15 +10,15 @@ This is just a toy project to try out Cython.
 
     # pip install cyprimes
 
-To install *CyPrimes* a C-compiler ([GCC](https://en.wikipedia.org/wiki/GNU_Compiler_Collection),
-[MinGW](https://en.wikipedia.org/wiki/MinGW)) is required.
+To install *CyPrimes* a C-compiler (e.g. [GCC](https://en.wikipedia.org/wiki/GNU_Compiler_Collection)),
+**which must support ISO C99**, is required.
 
 
 ## Usage
 
 ### Function `is_prime(number)`
 
-Returns `True` if the `number` is prime. Because it uses the C-type *unsigned long*
+Returns `True` if the `number` is prime. Because it uses the C-type *unsigned long long* (C99)
 for `number` it raises a `ValueError` if `number < 0` or `number > cyprimes.max_ulong`. It raises
 a `TypeError` if `number` is not an integer.
 
@@ -79,6 +79,10 @@ Although this class uses a bitarray for the sieve, be carefull not to run out of
 
 
 ## History
+
+2021-06-03 (0.7.4)
+
+* Bugfix: should now work correctly on 32-bit systems
 
 2020-12-31 (0.7.3)
 
