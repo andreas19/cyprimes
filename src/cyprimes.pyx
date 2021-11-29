@@ -207,7 +207,9 @@ cdef class Primes:
                     return k * 2 + 3
 
     def __eq__(self, other):
-        return self.len == len(other)
+        if isinstance(other, self.__class__):
+            return self.len == len(other)
+        return NotImplemented
 
     def __hash__(self):
         return hash(self.len)

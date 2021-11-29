@@ -80,6 +80,10 @@ Although this class uses a bitarray for the sieve, be carefull not to run out of
 
 ## History
 
+2021-11-29 (0.7.5)
+
+* Fix method Primes.\_\_eq\_\_()
+
 2021-06-03 (0.7.4)
 
 * Bugfix: should now work correctly on 32-bit systems

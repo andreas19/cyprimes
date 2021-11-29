@@ -64,6 +64,12 @@ def test_primes(primes_from_file):
     assert repr(primes) == 'Primes(limit=7919)'
 
 
+def test_eq(primes_100):
+    primes = p.Primes(100)
+    assert primes_100 == primes
+    assert primes_100 != [0] * 25
+
+
 def test_primes_index(primes_100):
     assert primes_100.index(2) == 0
     assert primes_100.index(97) == len(primes_100) - 1
