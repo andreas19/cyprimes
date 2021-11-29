@@ -5,7 +5,7 @@ with open('README.md') as fh:
 
 setup(
     name='cyprimes',
-    version='0.7.4',
+    version='0.7.5',
     author='Andreas Suhre',
     author_email='andreas19@posteo.eu',
     url='https://github.com/andreas19/cyprimes/',
