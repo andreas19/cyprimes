@@ -80,6 +80,10 @@ Although this class uses a bitarray for the sieve, be carefull not to run out of
 
 ## History
 
+2022-04-13 (0.7.6)
+
+* Now works with Python 3.10
+
 2021-11-29 (0.7.5)
 
 * Fix method Primes.\_\_eq\_\_()
